@@ -1,0 +1,40 @@
+{
+    "name": "@fern-api/open-ai",
+    "version": "0.0.1",
+    "private": false,
+    "repository": "https://github.com/fern-openai/open-ai-node",
+    "files": [
+        "Client.d.ts",
+        "Client.js",
+        "environments.d.ts",
+        "environments.js",
+        "index.d.ts",
+        "index.js",
+        "api",
+        "core",
+        "errors",
+        "serialization"
+    ],
+    "main": "./index.js",
+    "types": "./index.d.ts",
+    "scripts": {
+        "format": "prettier --write 'src/**/*.ts'",
+        "build": "tsc && tsc-alias",
+        "prepack": "cp -rv dist/. ."
+    },
+    "dependencies": {
+        "url-join": "4.0.1",
+        "@types/url-join": "4.0.1",
+        "basic-auth": "2.0.1",
+        "@types/basic-auth": "1.1.3",
+        "js-base64": "3.7.2",
+        "buffer": "6.0.3",
+        "axios": "0.27.2"
+    },
+    "devDependencies": {
+        "@types/node": "17.0.33",
+        "prettier": "2.7.1",
+        "tsc-alias": "1.7.1",
+        "typescript": "4.6.4"
+    }
+}
