@@ -1,4 +1,4 @@
-# OpenAI Node Library
+# Open AI Node Library
 
 [![npm shield](https://img.shields.io/npm/v/@fern-api/open-ai)](https://www.npmjs.com/package/@fern-api/open-ai)
 
