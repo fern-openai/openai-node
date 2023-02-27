@@ -12,7 +12,6 @@ export const CreateAnswerRequest: core.serialization.ObjectSchema<
 > = core.serialization.object({
     model: core.serialization.string(),
     question: core.serialization.string(),
-    examples: core.serialization.list(core.serialization.list(core.serialization.string())),
     examplesContext: core.serialization.property("examples_context", core.serialization.string()),
     documents: core.serialization.list(core.serialization.string()).optional(),
     file: core.serialization.string().optional(),
@@ -36,7 +35,6 @@ export declare namespace CreateAnswerRequest {
     interface Raw {
         model: string;
         question: string;
-        examples: string[][];
         examples_context: string;
         documents?: string[] | null;
         file?: string | null;
