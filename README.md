@@ -10,12 +10,26 @@ API reference documentation is available [here](https://platform.openai.com/docs
 
 ## Usage
 
-[![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](TODO)
+[![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/typescript-example-using-sdk-built-with-fern-kfaxgf?file=app.ts)
 
 ```typescript
-import { TODO } from "TODO";
+import { OpenAiApiClient } from '@fern-api/open-ai';
 
-const TODO
+void main();
+
+async function main() {
+  const client = new OpenAiApiClient({
+    environment: 'OpenAiApiEnvironment',
+    token: 'YOUR_API_KEY',
+  });
+
+  const response = await client.edits.create({
+    model: 'text-davinci-edit-001',
+    input: 'What day of the wek is it?',
+    instruction: 'Fix the spelling mistakes',
+  });
+  console.log('Received response from OpenAI!', response);
+}
 ```
 
 ## Beta status
