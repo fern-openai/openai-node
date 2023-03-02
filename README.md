@@ -1,10 +1,10 @@
 ![openai image](./static/hero.png)
 
-# Open AI Node Library
+# OpenAI Node Library
 
 [![npm shield](https://img.shields.io/npm/v/@fern-api/open-ai)](https://www.npmjs.com/package/@fern-api/open-ai)
 
-The Open AI Node.js library provides access to the Open AI API from JavaScript/TypeScript.
+The OpenAI Node.js library provides access to the OpenAI API from JavaScript/TypeScript.
 
 ## Documentation
 
