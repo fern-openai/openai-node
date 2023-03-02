@@ -19,6 +19,9 @@ export declare namespace Models {
 export class Models {
     constructor(private readonly options: Models.Options) {}
 
+    /**
+     * Lists the currently available models, and provides basic information about each one such as the owner and availability.
+     */
     public async list(): Promise<OpenAiApi.ListModelsResponse> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/models"),
@@ -56,6 +59,9 @@ export class Models {
         }
     }
 
+    /**
+     * Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
+     */
     public async retrieve(model: OpenAiApi.ModelId): Promise<OpenAiApi.Model> {
         const _response = await core.fetcher({
             url: urlJoin(
@@ -95,6 +101,9 @@ export class Models {
         }
     }
 
+    /**
+     * Delete a fine-tuned model. You must have the Owner role in your organization.
+     */
     public async delete(model: OpenAiApi.ModelId): Promise<OpenAiApi.DeleteModelResponse> {
         const _response = await core.fetcher({
             url: urlJoin(

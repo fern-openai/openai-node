@@ -21,7 +21,7 @@ export const CreateClassificationRequest: core.serialization.ObjectSchema<
     maxExamples: core.serialization.property("max_examples", core.serialization.number().optional()),
     logitBias: core.serialization.property(
         "logit_bias",
-        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional()
+        core.serialization.record(core.serialization.string(), core.serialization.number().optional()).optional()
     ),
     returnPrompt: core.serialization.property("return_prompt", core.serialization.boolean().optional()),
     returnMetadata: core.serialization.property("return_metadata", core.serialization.boolean().optional()),
@@ -40,7 +40,7 @@ export declare namespace CreateClassificationRequest {
         temperature?: number | null;
         logprobs?: number | null;
         max_examples?: number | null;
-        logit_bias?: Record<string, unknown> | null;
+        logit_bias?: Record<string, number | null | undefined> | null;
         return_prompt?: boolean | null;
         return_metadata?: boolean | null;
         expand?: unknown[] | null;

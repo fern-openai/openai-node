@@ -19,6 +19,9 @@ export declare namespace Edits {
 export class Edits {
     constructor(private readonly options: Edits.Options) {}
 
+    /**
+     * Creates a new edit for the provided input, instruction, and parameters.
+     */
     public async create(request: OpenAiApi.CreateEditRequest): Promise<OpenAiApi.CreateEditResponse> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/edits"),

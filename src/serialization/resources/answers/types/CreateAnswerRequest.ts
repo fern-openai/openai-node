@@ -12,6 +12,9 @@ export const CreateAnswerRequest: core.serialization.ObjectSchema<
 > = core.serialization.object({
     model: core.serialization.string(),
     question: core.serialization.string(),
+    examples: core.serialization.list(
+        core.serialization.list(core.serialization.lazyObject(async () => (await import("../../..")).ExampleItems))
+    ),
     examplesContext: core.serialization.property("examples_context", core.serialization.string()),
     documents: core.serialization.list(core.serialization.string()).optional(),
     file: core.serialization.string().optional(),
@@ -23,7 +26,7 @@ export const CreateAnswerRequest: core.serialization.ObjectSchema<
     n: core.serialization.number().optional(),
     logitBias: core.serialization.property(
         "logit_bias",
-        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional()
+        core.serialization.record(core.serialization.string(), core.serialization.number().optional()).optional()
     ),
     returnMetadata: core.serialization.property("return_metadata", core.serialization.boolean().optional()),
     returnPrompt: core.serialization.property("return_prompt", core.serialization.boolean().optional()),
@@ -35,6 +38,7 @@ export declare namespace CreateAnswerRequest {
     interface Raw {
         model: string;
         question: string;
+        examples: serializers.ExampleItems.Raw[][];
         examples_context: string;
         documents?: string[] | null;
         file?: string | null;
@@ -44,7 +48,7 @@ export declare namespace CreateAnswerRequest {
         logprobs?: number | null;
         max_tokens?: number | null;
         n?: number | null;
-        logit_bias?: Record<string, unknown> | null;
+        logit_bias?: Record<string, number | null | undefined> | null;
         return_metadata?: boolean | null;
         return_prompt?: boolean | null;
         expand?: unknown[] | null;

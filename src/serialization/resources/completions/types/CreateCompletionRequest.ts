@@ -24,7 +24,7 @@ export const CreateCompletionRequest: core.serialization.ObjectSchema<
     bestOf: core.serialization.property("best_of", core.serialization.number().optional()),
     logitBias: core.serialization.property(
         "logit_bias",
-        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional()
+        core.serialization.record(core.serialization.string(), core.serialization.number().optional()).optional()
     ),
     user: core.serialization.string().optional(),
 });
@@ -43,7 +43,7 @@ export declare namespace CreateCompletionRequest {
         presence_penalty?: number | null;
         frequency_penalty?: number | null;
         best_of?: number | null;
-        logit_bias?: Record<string, unknown> | null;
+        logit_bias?: Record<string, number | null | undefined> | null;
         user?: string | null;
     }
 }

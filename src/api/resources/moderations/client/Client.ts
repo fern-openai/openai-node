@@ -19,6 +19,9 @@ export declare namespace Moderations {
 export class Moderations {
     constructor(private readonly options: Moderations.Options) {}
 
+    /**
+     * Classifies if text violates OpenAI's Content Policy
+     */
     public async create(request: OpenAiApi.CreateModerationRequest): Promise<OpenAiApi.CreateModerationResponse> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/moderations"),

@@ -19,6 +19,10 @@ export declare namespace Classifications {
 export class Classifications {
     constructor(private readonly options: Classifications.Options) {}
 
+    /**
+     * Classifies the specified `query` using provided examples. The endpoint first [searches](https://platform.openai.com/docs/api-reference/searches) over the labeled examples to select the ones most relevant for the particular query. Then, the relevant examples are combined with the query to construct a prompt to produce the final label via the [completions](https://platform.openai.com/docs/api-reference/completions) endpoint. Labeled examples can be provided via an uploaded `file`, or explicitly listed in the request using the `examples` parameter for quick tests and small scale use cases.
+     *
+     */
     public async create(
         request: OpenAiApi.CreateClassificationRequest
     ): Promise<OpenAiApi.CreateClassificationResponse> {

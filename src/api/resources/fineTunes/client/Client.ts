@@ -19,6 +19,9 @@ export declare namespace FineTunes {
 export class FineTunes {
     constructor(private readonly options: FineTunes.Options) {}
 
+    /**
+     * List your organization's fine-tuning jobs
+     */
     public async list(): Promise<OpenAiApi.ListFineTunesResponse> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/fine-tunes"),
@@ -56,6 +59,10 @@ export class FineTunes {
         }
     }
 
+    /**
+     * Creates a job that fine-tunes a specified model from a given dataset. Response includes details of the enqueued job including job status and the name of the fine-tuned models once complete. [Learn more about Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
+     *
+     */
     public async create(request: OpenAiApi.CreateFineTuneRequest): Promise<OpenAiApi.FineTune> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/fine-tunes"),
@@ -93,6 +100,11 @@ export class FineTunes {
         }
     }
 
+    /**
+     * Gets info about the fine-tune job.
+     * [Learn more about Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
+     *
+     */
     public async retrieve(fineTuneId: OpenAiApi.FineTuneId): Promise<OpenAiApi.FineTune> {
         const _response = await core.fetcher({
             url: urlJoin(
@@ -132,6 +144,9 @@ export class FineTunes {
         }
     }
 
+    /**
+     * Immediately cancel a fine-tune job.
+     */
     public async cancel(fineTuneId: OpenAiApi.FineTuneId): Promise<OpenAiApi.FineTune> {
         const _response = await core.fetcher({
             url: urlJoin(
@@ -171,6 +186,10 @@ export class FineTunes {
         }
     }
 
+    /**
+     * Get fine-grained status updates for a fine-tune job.
+     *
+     */
     public async listEvents(
         fineTuneId: OpenAiApi.FineTuneId,
         request: OpenAiApi.ListFineTuneEventsRequest = {}

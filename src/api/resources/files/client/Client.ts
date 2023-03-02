@@ -19,6 +19,9 @@ export declare namespace Files {
 export class Files {
     constructor(private readonly options: Files.Options) {}
 
+    /**
+     * Returns a list of files that belong to the user's organization.
+     */
     public async list(): Promise<OpenAiApi.ListFilesResponse> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/files"),
@@ -56,6 +59,10 @@ export class Files {
         }
     }
 
+    /**
+     * Upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Please contact us if you need to increase the storage limit.
+     *
+     */
     public async create(): Promise<OpenAiApi.OpenAiFile> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/files"),
@@ -92,6 +99,9 @@ export class Files {
         }
     }
 
+    /**
+     * Returns information about a specific file.
+     */
     public async retrieve(fileId: OpenAiApi.FileId): Promise<OpenAiApi.OpenAiFile> {
         const _response = await core.fetcher({
             url: urlJoin(
@@ -131,6 +141,9 @@ export class Files {
         }
     }
 
+    /**
+     * Delete a file.
+     */
     public async delete(fileId: OpenAiApi.FileId): Promise<OpenAiApi.DeleteFileResponse> {
         const _response = await core.fetcher({
             url: urlJoin(
@@ -171,6 +184,9 @@ export class Files {
         }
     }
 
+    /**
+     * Returns the contents of the specified file
+     */
     public async download(fileId: OpenAiApi.FileId): Promise<string> {
         const _response = await core.fetcher({
             url: urlJoin(

@@ -19,6 +19,10 @@ export declare namespace Answers {
 export class Answers {
     constructor(private readonly options: Answers.Options) {}
 
+    /**
+     * Answers the specified question using the provided documents and examples. The endpoint first [searches](https://platform.openai.com/docs/api-reference/searches) over provided documents or files to find relevant context. The relevant context is combined with the provided examples and question to create the prompt for [completion](https://platform.openai.com/docs/api-reference/completions).
+     *
+     */
     public async create(request: OpenAiApi.CreateAnswerRequest): Promise<OpenAiApi.CreateAnswerResponse> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/answers"),

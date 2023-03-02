@@ -19,6 +19,9 @@ export declare namespace Embeddings {
 export class Embeddings {
     constructor(private readonly options: Embeddings.Options) {}
 
+    /**
+     * Creates an embedding vector representing the input text.
+     */
     public async create(request: OpenAiApi.CreateEmbeddingRequest): Promise<OpenAiApi.CreateEmbeddingResponse> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/embeddings"),

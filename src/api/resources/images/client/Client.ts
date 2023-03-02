@@ -19,6 +19,9 @@ export declare namespace Images {
 export class Images {
     constructor(private readonly options: Images.Options) {}
 
+    /**
+     * Creates an image given a prompt.
+     */
     public async create(request: OpenAiApi.CreateImageRequest): Promise<OpenAiApi.ImagesResponse> {
         const _response = await core.fetcher({
             url: urlJoin(
@@ -59,6 +62,9 @@ export class Images {
         }
     }
 
+    /**
+     * Creates an edited or extended image given an original image and a prompt.
+     */
     public async createImageEdit(): Promise<OpenAiApi.ImagesResponse> {
         const _response = await core.fetcher({
             url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/images/edits"),
@@ -95,6 +101,9 @@ export class Images {
         }
     }
 
+    /**
+     * Creates a variation of a given image.
+     */
     public async createImageVariation(): Promise<OpenAiApi.ImagesResponse> {
         const _response = await core.fetcher({
             url: urlJoin(

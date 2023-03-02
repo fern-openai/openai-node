@@ -1,5 +1,8 @@
 export * as answers from "./answers";
 export * from "./answers/types";
+export * as audio from "./audio";
+export * as chat from "./chat";
+export * from "./chat/types";
 export * as classifications from "./classifications";
 export * from "./classifications/types";
 export * as commons from "./commons";
