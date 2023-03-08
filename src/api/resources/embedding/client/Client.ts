@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace Embedding {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -22,9 +22,9 @@ export class Embedding {
     /**
      * Creates an embedding vector representing the input text.
      */
-    public async create(request: OpenAiApi.CreateEmbeddingRequest): Promise<OpenAiApi.CreateEmbeddingResponse> {
+    public async create(request: OpenAI.CreateEmbeddingRequest): Promise<OpenAI.CreateEmbeddingResponse> {
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/embeddings"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/embeddings"),
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -41,7 +41,7 @@ export class Embedding {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -49,14 +49,14 @@ export class Embedding {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }

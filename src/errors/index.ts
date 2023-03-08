@@ -1,2 +1,2 @@
-export { OpenAiApiError } from "./OpenAiApiError";
-export { OpenAiApiTimeoutError } from "./OpenAiApiTimeoutError";
+export { OpenAIError } from "./OpenAIError";
+export { OpenAITimeoutError } from "./OpenAITimeoutError";

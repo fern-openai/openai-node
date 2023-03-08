@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const AudioFile: core.serialization.Schema<serializers.AudioFile.Raw, OpenAiApi.AudioFile> =
+export const AudioFile: core.serialization.Schema<serializers.AudioFile.Raw, OpenAI.AudioFile> =
     core.serialization.enum_(["mp3", "mp4", "mpeg", "mpga", "m4a", "wav", "webm"]);
 
 export declare namespace AudioFile {

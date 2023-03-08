@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const EmbedData: core.serialization.ObjectSchema<serializers.EmbedData.Raw, OpenAiApi.EmbedData> =
+export const EmbedData: core.serialization.ObjectSchema<serializers.EmbedData.Raw, OpenAI.EmbedData> =
     core.serialization.object({
         index: core.serialization.number(),
         object: core.serialization.string(),

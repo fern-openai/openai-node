@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const FineTuneEvent: core.serialization.ObjectSchema<serializers.FineTuneEvent.Raw, OpenAiApi.FineTuneEvent> =
+export const FineTuneEvent: core.serialization.ObjectSchema<serializers.FineTuneEvent.Raw, OpenAI.FineTuneEvent> =
     core.serialization.object({
         object: core.serialization.string(),
         createdAt: core.serialization.property("created_at", core.serialization.number()),

@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const CreateEmbeddingResponse: core.serialization.ObjectSchema<
     serializers.CreateEmbeddingResponse.Raw,
-    OpenAiApi.CreateEmbeddingResponse
+    OpenAI.CreateEmbeddingResponse
 > = core.serialization.object({
     object: core.serialization.string(),
     model: core.serialization.string(),

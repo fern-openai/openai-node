@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace File_ {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -22,9 +22,9 @@ export class File_ {
     /**
      * Returns a list of files that belong to the user's organization.
      */
-    public async list(): Promise<OpenAiApi.ListFilesResponse> {
+    public async list(): Promise<OpenAI.ListFilesResponse> {
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/files"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/files"),
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -40,7 +40,7 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -48,14 +48,14 @@ export class File_ {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -65,12 +65,12 @@ export class File_ {
      * Upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Please contact us if you need to increase the storage limit.
      *
      */
-    public async create(file: File, request: OpenAiApi.CreateFileRequest): Promise<OpenAiApi.OpenAiFile> {
+    public async create(file: File, request: OpenAI.CreateFileRequest): Promise<OpenAI.OpenAiFile> {
         const _request = new FormData();
         _request.append("file", file);
         _request.append("purpose", request.purpose);
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/files"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/files"),
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -87,7 +87,7 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -95,14 +95,14 @@ export class File_ {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -111,10 +111,10 @@ export class File_ {
     /**
      * Returns information about a specific file.
      */
-    public async retrieve(fileId: OpenAiApi.FileId): Promise<OpenAiApi.OpenAiFile> {
+    public async retrieve(fileId: OpenAI.FileId): Promise<OpenAI.OpenAiFile> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/files/${await serializers.FileId.jsonOrThrow(fileId)}`
             ),
             method: "GET",
@@ -132,7 +132,7 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -140,14 +140,14 @@ export class File_ {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -156,10 +156,10 @@ export class File_ {
     /**
      * Delete a file.
      */
-    public async delete(fileId: OpenAiApi.FileId): Promise<OpenAiApi.DeleteFileResponse> {
+    public async delete(fileId: OpenAI.FileId): Promise<OpenAI.DeleteFileResponse> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/files/${await serializers.FileId.jsonOrThrow(fileId)}`
             ),
             method: "DELETE",
@@ -177,7 +177,7 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -185,14 +185,14 @@ export class File_ {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -201,10 +201,10 @@ export class File_ {
     /**
      * Returns the contents of the specified file
      */
-    public async download(fileId: OpenAiApi.FileId): Promise<string> {
+    public async download(fileId: OpenAI.FileId): Promise<string> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/files/${await serializers.FileId.jsonOrThrow(fileId)}/content`
             ),
             method: "GET",
@@ -222,7 +222,7 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -230,14 +230,14 @@ export class File_ {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }

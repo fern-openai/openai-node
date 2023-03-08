@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../../core";
 
 export const CreateCompletionRequest: core.serialization.Schema<
     serializers.CreateCompletionRequest.Raw,
-    OpenAiApi.CreateCompletionRequest
+    OpenAI.CreateCompletionRequest
 > = core.serialization.object({
     model: core.serialization.string(),
     prompt: core.serialization.lazy(async () => (await import("../../../..")).Prompt).optional(),

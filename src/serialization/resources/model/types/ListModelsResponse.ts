@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const ListModelsResponse: core.serialization.ObjectSchema<
     serializers.ListModelsResponse.Raw,
-    OpenAiApi.ListModelsResponse
+    OpenAI.ListModelsResponse
 > = core.serialization.object({
     object: core.serialization.string(),
     data: core.serialization.list(core.serialization.lazyObject(async () => (await import("../../..")).Model)),

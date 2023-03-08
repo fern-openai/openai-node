@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const ChatUsage: core.serialization.ObjectSchema<serializers.ChatUsage.Raw, OpenAiApi.ChatUsage> =
+export const ChatUsage: core.serialization.ObjectSchema<serializers.ChatUsage.Raw, OpenAI.ChatUsage> =
     core.serialization.object({
         promptTokens: core.serialization.property("prompt_tokens", core.serialization.number()),
         completionTokens: core.serialization.property("completion_tokens", core.serialization.number()),

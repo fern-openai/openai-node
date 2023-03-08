@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const ImageFormat: core.serialization.Schema<serializers.ImageFormat.Raw, OpenAiApi.ImageFormat> =
+export const ImageFormat: core.serialization.Schema<serializers.ImageFormat.Raw, OpenAI.ImageFormat> =
     core.serialization.enum_(["url", "b64_json"]);
 
 export declare namespace ImageFormat {

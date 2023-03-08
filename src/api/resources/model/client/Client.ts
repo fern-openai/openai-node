@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace Model {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -22,9 +22,9 @@ export class Model {
     /**
      * Lists the currently available models, and provides basic information about each one such as the owner and availability.
      */
-    public async list(): Promise<OpenAiApi.ListModelsResponse> {
+    public async list(): Promise<OpenAI.ListModelsResponse> {
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/models"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/models"),
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -40,7 +40,7 @@ export class Model {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -48,14 +48,14 @@ export class Model {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -64,10 +64,10 @@ export class Model {
     /**
      * Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
      */
-    public async retrieve(model: OpenAiApi.ModelId): Promise<OpenAiApi.Model> {
+    public async retrieve(model: OpenAI.ModelId): Promise<OpenAI.Model> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/models/${await serializers.ModelId.jsonOrThrow(model)}`
             ),
             method: "GET",
@@ -85,7 +85,7 @@ export class Model {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -93,14 +93,14 @@ export class Model {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -109,10 +109,10 @@ export class Model {
     /**
      * Delete a fine-tuned model. You must have the Owner role in your organization.
      */
-    public async delete(model: OpenAiApi.ModelId): Promise<OpenAiApi.DeleteModelResponse> {
+    public async delete(model: OpenAI.ModelId): Promise<OpenAI.DeleteModelResponse> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/models/${await serializers.ModelId.jsonOrThrow(model)}`
             ),
             method: "DELETE",
@@ -130,7 +130,7 @@ export class Model {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -138,14 +138,14 @@ export class Model {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }

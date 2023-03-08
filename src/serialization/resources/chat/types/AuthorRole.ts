@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const AuthorRole: core.serialization.Schema<serializers.AuthorRole.Raw, OpenAiApi.AuthorRole> =
+export const AuthorRole: core.serialization.Schema<serializers.AuthorRole.Raw, OpenAI.AuthorRole> =
     core.serialization.enum_(["system", "user", "assistant"]);
 
 export declare namespace AuthorRole {

@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const ListFineTuneEventsResponse: core.serialization.ObjectSchema<
     serializers.ListFineTuneEventsResponse.Raw,
-    OpenAiApi.ListFineTuneEventsResponse
+    OpenAI.ListFineTuneEventsResponse
 > = core.serialization.object({
     object: core.serialization.string(),
     data: core.serialization.list(core.serialization.lazyObject(async () => (await import("../../..")).FineTuneEvent)),

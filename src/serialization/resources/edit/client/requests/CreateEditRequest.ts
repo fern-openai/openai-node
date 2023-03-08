@@ -3,20 +3,18 @@
  */
 
 import * as serializers from "../../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../../core";
 
-export const CreateEditRequest: core.serialization.Schema<
-    serializers.CreateEditRequest.Raw,
-    OpenAiApi.CreateEditRequest
-> = core.serialization.object({
-    model: core.serialization.string(),
-    input: core.serialization.string().optional(),
-    instruction: core.serialization.string(),
-    n: core.serialization.number().optional(),
-    temperature: core.serialization.number().optional(),
-    topP: core.serialization.property("top_p", core.serialization.number().optional()),
-});
+export const CreateEditRequest: core.serialization.Schema<serializers.CreateEditRequest.Raw, OpenAI.CreateEditRequest> =
+    core.serialization.object({
+        model: core.serialization.string(),
+        input: core.serialization.string().optional(),
+        instruction: core.serialization.string(),
+        n: core.serialization.number().optional(),
+        temperature: core.serialization.number().optional(),
+        topP: core.serialization.property("top_p", core.serialization.number().optional()),
+    });
 
 export declare namespace CreateEditRequest {
     interface Raw {

@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace Classification {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -23,12 +23,10 @@ export class Classification {
      * Classifies the specified `query` using provided examples. The endpoint first [searches](https://platform.openai.com/docs/api-reference/searches) over the labeled examples to select the ones most relevant for the particular query. Then, the relevant examples are combined with the query to construct a prompt to produce the final label via the [completions](https://platform.openai.com/docs/api-reference/completions) endpoint. Labeled examples can be provided via an uploaded `file`, or explicitly listed in the request using the `examples` parameter for quick tests and small scale use cases.
      *
      */
-    public async create(
-        request: OpenAiApi.CreateClassificationRequest
-    ): Promise<OpenAiApi.CreateClassificationResponse> {
+    public async create(request: OpenAI.CreateClassificationRequest): Promise<OpenAI.CreateClassificationResponse> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 "/completions/classifications"
             ),
             method: "POST",
@@ -49,7 +47,7 @@ export class Classification {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -57,14 +55,14 @@ export class Classification {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }

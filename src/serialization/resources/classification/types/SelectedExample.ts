@@ -3,17 +3,15 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const SelectedExample: core.serialization.ObjectSchema<
-    serializers.SelectedExample.Raw,
-    OpenAiApi.SelectedExample
-> = core.serialization.object({
-    document: core.serialization.number().optional(),
-    text: core.serialization.string().optional(),
-    label: core.serialization.string().optional(),
-});
+export const SelectedExample: core.serialization.ObjectSchema<serializers.SelectedExample.Raw, OpenAI.SelectedExample> =
+    core.serialization.object({
+        document: core.serialization.number().optional(),
+        text: core.serialization.string().optional(),
+        label: core.serialization.string().optional(),
+    });
 
 export declare namespace SelectedExample {
     interface Raw {

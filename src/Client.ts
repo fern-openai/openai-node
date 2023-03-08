@@ -18,15 +18,15 @@ import { Image } from "./api/resources/image/client/Client";
 import { Model } from "./api/resources/model/client/Client";
 import { Moderation } from "./api/resources/moderation/client/Client";
 
-export declare namespace OpenAiApiClient {
+export declare namespace OpenAIClient {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
 
-export class OpenAiApiClient {
-    constructor(private readonly options: OpenAiApiClient.Options) {}
+export class OpenAIClient {
+    constructor(private readonly options: OpenAIClient.Options) {}
 
     private _answer: Answer | undefined;
 

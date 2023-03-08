@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const EditChoice: core.serialization.ObjectSchema<serializers.EditChoice.Raw, OpenAiApi.EditChoice> =
+export const EditChoice: core.serialization.ObjectSchema<serializers.EditChoice.Raw, OpenAI.EditChoice> =
     core.serialization.object({
         text: core.serialization.string().optional(),
         index: core.serialization.number().optional(),

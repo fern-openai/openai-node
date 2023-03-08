@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const QuestionAnswer: core.serialization.Schema<serializers.QuestionAnswer.Raw, OpenAiApi.QuestionAnswer> =
+export const QuestionAnswer: core.serialization.Schema<serializers.QuestionAnswer.Raw, OpenAI.QuestionAnswer> =
     core.serialization.list(core.serialization.string());
 
 export declare namespace QuestionAnswer {

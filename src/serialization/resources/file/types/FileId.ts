@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const FileId: core.serialization.Schema<serializers.FileId.Raw, OpenAiApi.FileId> = core.serialization.string();
+export const FileId: core.serialization.Schema<serializers.FileId.Raw, OpenAI.FileId> = core.serialization.string();
 
 export declare namespace FileId {
     type Raw = string;

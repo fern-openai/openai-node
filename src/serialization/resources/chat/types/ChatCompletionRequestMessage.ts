@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const ChatCompletionRequestMessage: core.serialization.ObjectSchema<
     serializers.ChatCompletionRequestMessage.Raw,
-    OpenAiApi.ChatCompletionRequestMessage
+    OpenAI.ChatCompletionRequestMessage
 > = core.serialization.object({
     role: core.serialization.lazy(async () => (await import("../../..")).AuthorRole),
     content: core.serialization.string(),

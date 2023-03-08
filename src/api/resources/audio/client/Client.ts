@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace Audio {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -24,8 +24,8 @@ export class Audio {
      */
     public async transcribe(
         file: File,
-        request: OpenAiApi.CreateTranscriptionRequest
-    ): Promise<OpenAiApi.CreateTranscriptionResponse> {
+        request: OpenAI.CreateTranscriptionRequest
+    ): Promise<OpenAI.CreateTranscriptionResponse> {
         const _request = new FormData();
         _request.append("file", file);
         _request.append("model", request.model);
@@ -47,7 +47,7 @@ export class Audio {
 
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 "/audio/transcriptions"
             ),
             method: "POST",
@@ -66,7 +66,7 @@ export class Audio {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -74,14 +74,14 @@ export class Audio {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -90,7 +90,7 @@ export class Audio {
     /**
      * Translates audio into into English.
      */
-    public async translate(file: File, request: OpenAiApi.CreateTranslationRequest): Promise<void> {
+    public async translate(file: File, request: OpenAI.CreateTranslationRequest): Promise<void> {
         const _request = new FormData();
         _request.append("file", file);
         _request.append("model", request.model);
@@ -108,10 +108,7 @@ export class Audio {
 
         _request.append("response", JSON.stringify(request.response));
         const _response = await core.fetcher({
-            url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
-                "/audio/translations"
-            ),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/audio/translations"),
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -124,7 +121,7 @@ export class Audio {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -132,14 +129,14 @@ export class Audio {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }

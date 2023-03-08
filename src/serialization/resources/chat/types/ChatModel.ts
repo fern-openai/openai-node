@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const ChatModel: core.serialization.Schema<serializers.ChatModel.Raw, OpenAiApi.ChatModel> =
+export const ChatModel: core.serialization.Schema<serializers.ChatModel.Raw, OpenAI.ChatModel> =
     core.serialization.enum_(["gpt-3.5-turbo", "gpt-3.5-turbo-0301"]);
 
 export declare namespace ChatModel {

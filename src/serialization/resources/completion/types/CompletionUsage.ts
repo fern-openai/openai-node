@@ -3,17 +3,15 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const CompletionUsage: core.serialization.ObjectSchema<
-    serializers.CompletionUsage.Raw,
-    OpenAiApi.CompletionUsage
-> = core.serialization.object({
-    promptTokens: core.serialization.property("prompt_tokens", core.serialization.number()),
-    completionTokens: core.serialization.property("completion_tokens", core.serialization.number()),
-    totalTokens: core.serialization.property("total_tokens", core.serialization.number()),
-});
+export const CompletionUsage: core.serialization.ObjectSchema<serializers.CompletionUsage.Raw, OpenAI.CompletionUsage> =
+    core.serialization.object({
+        promptTokens: core.serialization.property("prompt_tokens", core.serialization.number()),
+        completionTokens: core.serialization.property("completion_tokens", core.serialization.number()),
+        totalTokens: core.serialization.property("total_tokens", core.serialization.number()),
+    });
 
 export declare namespace CompletionUsage {
     interface Raw {

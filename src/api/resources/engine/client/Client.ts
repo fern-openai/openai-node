@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace Engine {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -22,9 +22,9 @@ export class Engine {
     /**
      * Lists the currently available (non-finetuned) models, and provides basic information about each one such as the owner and availability.
      */
-    public async list(): Promise<OpenAiApi.ListEnginesResponse> {
+    public async list(): Promise<OpenAI.ListEnginesResponse> {
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/engines"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/engines"),
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -40,7 +40,7 @@ export class Engine {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -48,14 +48,14 @@ export class Engine {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -64,10 +64,10 @@ export class Engine {
     /**
      * Retrieves a model instance, providing basic information about it such as the owner and availability.
      */
-    public async retrieve(engineId: OpenAiApi.EngineId): Promise<OpenAiApi.Engine> {
+    public async retrieve(engineId: OpenAI.EngineId): Promise<OpenAI.Engine> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/engines/${await serializers.EngineId.jsonOrThrow(engineId)}`
             ),
             method: "GET",
@@ -85,7 +85,7 @@ export class Engine {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -93,14 +93,14 @@ export class Engine {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -111,12 +111,12 @@ export class Engine {
      *
      */
     public async create(
-        engineId: OpenAiApi.EngineId,
-        request: OpenAiApi.CreateSearchRequest
-    ): Promise<OpenAiApi.CreateSearchResponse> {
+        engineId: OpenAI.EngineId,
+        request: OpenAI.CreateSearchRequest
+    ): Promise<OpenAI.CreateSearchResponse> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/engines/${await serializers.EngineId.jsonOrThrow(engineId)}/search`
             ),
             method: "POST",
@@ -135,7 +135,7 @@ export class Engine {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -143,14 +143,14 @@ export class Engine {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }

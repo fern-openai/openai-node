@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const DeleteModelResponse: core.serialization.ObjectSchema<
     serializers.DeleteModelResponse.Raw,
-    OpenAiApi.DeleteModelResponse
+    OpenAI.DeleteModelResponse
 > = core.serialization.object({
     id: core.serialization.string(),
     object: core.serialization.string(),

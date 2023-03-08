@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const CreateTranslationResponse: core.serialization.ObjectSchema<
     serializers.CreateTranslationResponse.Raw,
-    OpenAiApi.CreateTranslationResponse
+    OpenAI.CreateTranslationResponse
 > = core.serialization.object({
     text: core.serialization.string(),
 });

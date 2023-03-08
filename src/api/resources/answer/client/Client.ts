@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace Answer {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -23,9 +23,9 @@ export class Answer {
      * Answers the specified question using the provided documents and examples. The endpoint first [searches](https://platform.openai.com/docs/api-reference/searches) over provided documents or files to find relevant context. The relevant context is combined with the provided examples and question to create the prompt for [completion](https://platform.openai.com/docs/api-reference/completions).
      *
      */
-    public async create(request: OpenAiApi.CreateAnswerRequest): Promise<OpenAiApi.CreateAnswerResponse> {
+    public async create(request: OpenAI.CreateAnswerRequest): Promise<OpenAI.CreateAnswerResponse> {
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/answers"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/answers"),
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -42,7 +42,7 @@ export class Answer {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -50,14 +50,14 @@ export class Answer {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }

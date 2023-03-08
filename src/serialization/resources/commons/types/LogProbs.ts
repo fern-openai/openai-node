@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const LogProbs: core.serialization.ObjectSchema<serializers.LogProbs.Raw, OpenAiApi.LogProbs> =
+export const LogProbs: core.serialization.ObjectSchema<serializers.LogProbs.Raw, OpenAI.LogProbs> =
     core.serialization.object({
         tokens: core.serialization.list(core.serialization.string()).optional(),
         tokenLogprobs: core.serialization.property(

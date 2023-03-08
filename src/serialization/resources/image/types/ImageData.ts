@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const ImageData: core.serialization.ObjectSchema<serializers.ImageData.Raw, OpenAiApi.ImageData> =
+export const ImageData: core.serialization.ObjectSchema<serializers.ImageData.Raw, OpenAI.ImageData> =
     core.serialization.object({
         url: core.serialization.string().optional(),
         b64Json: core.serialization.property("b64_json", core.serialization.string().optional()),

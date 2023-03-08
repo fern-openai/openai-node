@@ -3,16 +3,17 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const Engine: core.serialization.ObjectSchema<serializers.Engine.Raw, OpenAiApi.Engine> =
-    core.serialization.object({
+export const Engine: core.serialization.ObjectSchema<serializers.Engine.Raw, OpenAI.Engine> = core.serialization.object(
+    {
         id: core.serialization.lazy(async () => (await import("../../..")).EngineId),
         object: core.serialization.string(),
         created: core.serialization.number().optional(),
         ready: core.serialization.boolean(),
-    });
+    }
+);
 
 export declare namespace Engine {
     interface Raw {

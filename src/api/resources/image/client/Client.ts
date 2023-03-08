@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace Image {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -22,12 +22,9 @@ export class Image {
     /**
      * Creates an image given a prompt.
      */
-    public async create(request: OpenAiApi.CreateImageRequest): Promise<OpenAiApi.ImagesResponse> {
+    public async create(request: OpenAI.CreateImageRequest): Promise<OpenAI.ImagesResponse> {
         const _response = await core.fetcher({
-            url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
-                "/images/generations"
-            ),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/images/generations"),
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -44,7 +41,7 @@ export class Image {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -52,14 +49,14 @@ export class Image {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -71,8 +68,8 @@ export class Image {
     public async createEdit(
         image: File,
         mask: File | undefined,
-        request: OpenAiApi.CreateImageEditRequest
-    ): Promise<OpenAiApi.ImagesResponse> {
+        request: OpenAI.CreateImageEditRequest
+    ): Promise<OpenAI.ImagesResponse> {
         const _request = new FormData();
         _request.append("image", image);
         if (mask != null) {
@@ -97,7 +94,7 @@ export class Image {
         }
 
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/images/edits"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/images/edits"),
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -114,7 +111,7 @@ export class Image {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -122,14 +119,14 @@ export class Image {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -140,8 +137,8 @@ export class Image {
      */
     public async createVariation(
         image: File,
-        request: OpenAiApi.CreateImageVariationRequest
-    ): Promise<OpenAiApi.ImagesResponse> {
+        request: OpenAI.CreateImageVariationRequest
+    ): Promise<OpenAI.ImagesResponse> {
         const _request = new FormData();
         _request.append("image", image);
         if (request.n != null) {
@@ -161,10 +158,7 @@ export class Image {
         }
 
         const _response = await core.fetcher({
-            url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
-                "/images/variations"
-            ),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/images/variations"),
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -181,7 +175,7 @@ export class Image {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -189,14 +183,14 @@ export class Image {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }

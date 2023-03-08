@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace FineTune {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -22,9 +22,9 @@ export class FineTune {
     /**
      * List your organization's fine-tuning jobs
      */
-    public async list(): Promise<OpenAiApi.ListFineTunesResponse> {
+    public async list(): Promise<OpenAI.ListFineTunesResponse> {
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/fine-tunes"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/fine-tunes"),
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -40,7 +40,7 @@ export class FineTune {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -48,14 +48,14 @@ export class FineTune {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -65,9 +65,9 @@ export class FineTune {
      * Creates a job that fine-tunes a specified model from a given dataset. Response includes details of the enqueued job including job status and the name of the fine-tuned models once complete. [Learn more about Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
      *
      */
-    public async create(request: OpenAiApi.CreateFineTuneRequest): Promise<OpenAiApi.FineTune> {
+    public async create(request: OpenAI.CreateFineTuneRequest): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
-            url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/fine-tunes"),
+            url: urlJoin(this.options.environment ?? environments.OpenAIEnvironment.Production, "/fine-tunes"),
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
@@ -84,7 +84,7 @@ export class FineTune {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -92,14 +92,14 @@ export class FineTune {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -110,10 +110,10 @@ export class FineTune {
      * [Learn more about Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
      *
      */
-    public async retrieve(fineTuneId: OpenAiApi.FineTuneId): Promise<OpenAiApi.FineTune> {
+    public async retrieve(fineTuneId: OpenAI.FineTuneId): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/fine-tunes/${await serializers.FineTuneId.jsonOrThrow(fineTuneId)}`
             ),
             method: "GET",
@@ -131,7 +131,7 @@ export class FineTune {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -139,14 +139,14 @@ export class FineTune {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -155,10 +155,10 @@ export class FineTune {
     /**
      * Immediately cancel a fine-tune job.
      */
-    public async cancel(fineTuneId: OpenAiApi.FineTuneId): Promise<OpenAiApi.FineTune> {
+    public async cancel(fineTuneId: OpenAI.FineTuneId): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
             url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                this.options.environment ?? environments.OpenAIEnvironment.Production,
                 `/fine-tunes/${await serializers.FineTuneId.jsonOrThrow(fineTuneId)}/cancel`
             ),
             method: "POST",
@@ -176,7 +176,7 @@ export class FineTune {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
+            throw new errors.OpenAIError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -184,43 +184,43 @@ export class FineTune {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
+                throw new errors.OpenAITimeoutError();
             case "unknown":
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     message: _response.error.errorMessage,
                 });
         }
     }
 
-    public listEvents(
-        fineTuneId: OpenAiApi.FineTuneId,
-        request: OpenAiApi.ListFineTuneEventsRequest & {
-            stream?: false;
-        } = {}
-    ): Promise<OpenAiApi.ListFineTuneEventsResponse>;
-    public listEvents(
-        fineTuneId: OpenAiApi.FineTuneId,
-        request: OpenAiApi.ListFineTuneEventsRequest & {
-            stream: true;
-        } = {},
-        cb: (data: OpenAiApi.FineTune) => void,
-        opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
-    ): Promise<void>;
     /**
      * Get fine-grained status updates for a fine-tune job.
      *
      */
-    public async listEvents(
-        fineTuneId: OpenAiApi.FineTuneId,
-        request: OpenAiApi.ListFineTuneEventsRequest,
-        cb?: (data: OpenAiApi.FineTune) => void,
+    public listEvents(
+        fineTuneId: OpenAI.FineTuneId,
+        request: OpenAI.ListFineTuneEventsRequest & {
+            stream?: false;
+        }
+    ): Promise<OpenAI.ListFineTuneEventsResponse>;
+    public listEvents(
+        fineTuneId: OpenAI.FineTuneId,
+        request: OpenAI.ListFineTuneEventsRequest & {
+            stream: true;
+        },
+        cb: (data: OpenAI.FineTune) => void,
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
-    ): Promise<OpenAiApi.ListFineTuneEventsResponse | void> {
+    ): Promise<void>;
+    public async listEvents(
+        fineTuneId: OpenAI.FineTuneId,
+        request: OpenAI.ListFineTuneEventsRequest = {},
+        cb?: (data: OpenAI.FineTune) => void,
+        opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
+    ): Promise<OpenAI.ListFineTuneEventsResponse | void> {
         const { stream } = request;
         const _queryParams = new URLSearchParams();
         if (stream != null) {
@@ -230,7 +230,7 @@ export class FineTune {
         if (stream) {
             await core.streamingFetcher({
                 url: urlJoin(
-                    this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                    this.options.environment ?? environments.OpenAIEnvironment.Production,
                     `/fine-tunes/${await serializers.FineTuneId.jsonOrThrow(fineTuneId)}/events`
                 ),
                 method: "GET",
@@ -258,7 +258,7 @@ export class FineTune {
         } else {
             const _response = await core.fetcher({
                 url: urlJoin(
-                    this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                    this.options.environment ?? environments.OpenAIEnvironment.Production,
                     `/fine-tunes/${await serializers.FineTuneId.jsonOrThrow(fineTuneId)}/events`
                 ),
                 method: "GET",
@@ -276,21 +276,21 @@ export class FineTune {
                 });
             }
             if (_response.error.reason === "status-code") {
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.body,
                 });
             }
             switch (_response.error.reason) {
                 case "non-json":
-                    throw new errors.OpenAiApiError({
+                    throw new errors.OpenAIError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.rawBody,
                     });
                 case "timeout":
-                    throw new errors.OpenAiApiTimeoutError();
+                    throw new errors.OpenAITimeoutError();
                 case "unknown":
-                    throw new errors.OpenAiApiError({
+                    throw new errors.OpenAIError({
                         message: _response.error.errorMessage,
                     });
             }

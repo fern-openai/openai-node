@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const CompletionStop: core.serialization.Schema<serializers.CompletionStop.Raw, OpenAiApi.CompletionStop> =
+export const CompletionStop: core.serialization.Schema<serializers.CompletionStop.Raw, OpenAI.CompletionStop> =
     core.serialization.undiscriminatedUnion([
         core.serialization.string(),
         core.serialization.list(core.serialization.string()),

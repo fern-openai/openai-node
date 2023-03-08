@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const EditUsage: core.serialization.ObjectSchema<serializers.EditUsage.Raw, OpenAiApi.EditUsage> =
+export const EditUsage: core.serialization.ObjectSchema<serializers.EditUsage.Raw, OpenAI.EditUsage> =
     core.serialization.object({
         promptTokens: core.serialization.property("prompt_tokens", core.serialization.number()),
         completionTokens: core.serialization.property("completion_tokens", core.serialization.number()),

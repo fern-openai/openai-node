@@ -4,14 +4,14 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
 export declare namespace Chat {
     interface Options {
-        environment?: environments.OpenAiApiEnvironment | string;
+        environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
@@ -19,30 +19,30 @@ export declare namespace Chat {
 export class Chat {
     constructor(private readonly options: Chat.Options) {}
 
-    public createCompletion(
-        request: OpenAiApi.CreateChatCompletionRequest & {
-            stream?: false;
-        }
-    ): Promise<OpenAiApi.CreateChatCompletionResponse>;
-    public createCompletion(
-        request: OpenAiApi.CreateChatCompletionRequest & {
-            stream: true;
-        },
-        cb: (data: OpenAiApi.CreateChatCompletionResponse) => void,
-        opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
-    ): Promise<void>;
     /**
      * Creates a completion for the chat message
      */
-    public async createCompletion(
-        request: OpenAiApi.CreateChatCompletionRequest,
-        cb?: (data: OpenAiApi.CreateChatCompletionResponse) => void,
+    public createCompletion(
+        request: OpenAI.CreateChatCompletionRequest & {
+            stream?: false;
+        }
+    ): Promise<OpenAI.CreateChatCompletionResponse>;
+    public createCompletion(
+        request: OpenAI.CreateChatCompletionRequest & {
+            stream: true;
+        },
+        cb: (data: OpenAI.CreateChatCompletionResponse) => void,
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
-    ): Promise<OpenAiApi.CreateChatCompletionResponse | void> {
+    ): Promise<void>;
+    public async createCompletion(
+        request: OpenAI.CreateChatCompletionRequest,
+        cb?: (data: OpenAI.CreateChatCompletionResponse) => void,
+        opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
+    ): Promise<OpenAI.CreateChatCompletionResponse | void> {
         if (request.stream) {
             await core.streamingFetcher({
                 url: urlJoin(
-                    this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                    this.options.environment ?? environments.OpenAIEnvironment.Production,
                     "/chat/completions"
                 ),
                 method: "POST",
@@ -72,7 +72,7 @@ export class Chat {
         } else {
             const _response = await core.fetcher({
                 url: urlJoin(
-                    this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                    this.options.environment ?? environments.OpenAIEnvironment.Production,
                     "/chat/completions"
                 ),
                 method: "POST",
@@ -92,21 +92,21 @@ export class Chat {
                 });
             }
             if (_response.error.reason === "status-code") {
-                throw new errors.OpenAiApiError({
+                throw new errors.OpenAIError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.body,
                 });
             }
             switch (_response.error.reason) {
                 case "non-json":
-                    throw new errors.OpenAiApiError({
+                    throw new errors.OpenAIError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.rawBody,
                     });
                 case "timeout":
-                    throw new errors.OpenAiApiTimeoutError();
+                    throw new errors.OpenAITimeoutError();
                 case "unknown":
-                    throw new errors.OpenAiApiError({
+                    throw new errors.OpenAIError({
                         message: _response.error.errorMessage,
                     });
             }

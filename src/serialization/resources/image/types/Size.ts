@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const Size: core.serialization.Schema<serializers.Size.Raw, OpenAiApi.Size> = core.serialization.enum_([
+export const Size: core.serialization.Schema<serializers.Size.Raw, OpenAI.Size> = core.serialization.enum_([
     "256x256",
     "512x512",
     "1024x1024",

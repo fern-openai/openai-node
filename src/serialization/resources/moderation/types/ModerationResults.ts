@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const ModerationResults: core.serialization.ObjectSchema<
     serializers.ModerationResults.Raw,
-    OpenAiApi.ModerationResults
+    OpenAI.ModerationResults
 > = core.serialization.object({
     flagged: core.serialization.boolean(),
     categories: core.serialization.lazyObject(async () => (await import("../../..")).Categories),

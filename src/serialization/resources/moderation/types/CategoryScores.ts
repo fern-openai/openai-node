@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const CategoryScores: core.serialization.ObjectSchema<serializers.CategoryScores.Raw, OpenAiApi.CategoryScores> =
+export const CategoryScores: core.serialization.ObjectSchema<serializers.CategoryScores.Raw, OpenAI.CategoryScores> =
     core.serialization.object({
         hate: core.serialization.number(),
         hateThreatening: core.serialization.property("hate/threatening", core.serialization.number()),

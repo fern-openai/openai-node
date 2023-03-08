@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const CompletionChoice: core.serialization.ObjectSchema<
     serializers.CompletionChoice.Raw,
-    OpenAiApi.CompletionChoice
+    OpenAI.CompletionChoice
 > = core.serialization.object({
     text: core.serialization.string().optional(),
     index: core.serialization.number().optional(),

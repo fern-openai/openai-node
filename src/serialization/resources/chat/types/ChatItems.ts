@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const ChatItems: core.serialization.ObjectSchema<serializers.ChatItems.Raw, OpenAiApi.ChatItems> =
+export const ChatItems: core.serialization.ObjectSchema<serializers.ChatItems.Raw, OpenAI.ChatItems> =
     core.serialization.object({
         index: core.serialization.number(),
         message: core.serialization.lazyObject(async () => (await import("../../..")).ChatCompletionResponseMessage),

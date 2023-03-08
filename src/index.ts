@@ -1,4 +1,4 @@
-export * as OpenAiApi from "./api";
-export { OpenAiApiClient } from "./Client";
-export { OpenAiApiEnvironment } from "./environments";
-export { OpenAiApiError, OpenAiApiTimeoutError } from "./errors";
+export * as OpenAI from "./api";
+export { OpenAIClient } from "./Client";
+export { OpenAIEnvironment } from "./environments";
+export { OpenAIError, OpenAITimeoutError } from "./errors";

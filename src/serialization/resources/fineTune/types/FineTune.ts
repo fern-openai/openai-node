@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const FineTune: core.serialization.ObjectSchema<serializers.FineTune.Raw, OpenAiApi.FineTune> =
+export const FineTune: core.serialization.ObjectSchema<serializers.FineTune.Raw, OpenAI.FineTune> =
     core.serialization.object({
         id: core.serialization.string(),
         object: core.serialization.string(),

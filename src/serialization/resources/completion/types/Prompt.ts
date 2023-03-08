@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const Prompt: core.serialization.Schema<serializers.Prompt.Raw, OpenAiApi.Prompt> =
+export const Prompt: core.serialization.Schema<serializers.Prompt.Raw, OpenAI.Prompt> =
     core.serialization.undiscriminatedUnion([
         core.serialization.string(),
         core.serialization.list(core.serialization.string()),

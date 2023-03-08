@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../../core";
 
 export const CreateFineTuneRequest: core.serialization.Schema<
     serializers.CreateFineTuneRequest.Raw,
-    OpenAiApi.CreateFineTuneRequest
+    OpenAI.CreateFineTuneRequest
 > = core.serialization.object({
     trainingFile: core.serialization.property("training_file", core.serialization.string()),
     validationFile: core.serialization.property("validation_file", core.serialization.string().optional()),

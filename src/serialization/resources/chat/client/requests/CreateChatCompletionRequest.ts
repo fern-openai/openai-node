@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../../core";
 
 export const CreateChatCompletionRequest: core.serialization.Schema<
     serializers.CreateChatCompletionRequest.Raw,
-    OpenAiApi.CreateChatCompletionRequest
+    OpenAI.CreateChatCompletionRequest
 > = core.serialization.object({
     model: core.serialization.string(),
     messages: core.serialization.list(

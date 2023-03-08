@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/openai";
+import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const SearchData: core.serialization.ObjectSchema<serializers.SearchData.Raw, OpenAiApi.SearchData> =
+export const SearchData: core.serialization.ObjectSchema<serializers.SearchData.Raw, OpenAI.SearchData> =
     core.serialization.object({
         object: core.serialization.string().optional(),
         document: core.serialization.number().optional(),
