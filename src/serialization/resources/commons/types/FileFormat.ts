@@ -3,7 +3,7 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/open-ai";
+import { OpenAiApi } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const FileFormat: core.serialization.Schema<serializers.FileFormat.Raw, OpenAiApi.FileFormat> =

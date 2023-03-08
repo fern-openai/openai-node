@@ -14,7 +14,7 @@
         "rootDir": "src",
         "baseUrl": "src",
         "paths": {
-            "@fern-api/open-ai": [
+            "@fern-api/openai": [
                 "."
             ]
         }

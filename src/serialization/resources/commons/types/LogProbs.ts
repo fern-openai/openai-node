@@ -3,7 +3,7 @@
  */
 
 import * as serializers from "../../..";
-import { OpenAiApi } from "@fern-api/open-ai";
+import { OpenAiApi } from "@fern-api/openai";
 import * as core from "../../../../core";
 
 export const LogProbs: core.serialization.ObjectSchema<serializers.LogProbs.Raw, OpenAiApi.LogProbs> =

@@ -4,34 +4,34 @@
 
 import * as environments from "./environments";
 import * as core from "./core";
-import { Answers } from "./api/resources/answers/client/Client";
+import { Answer } from "./api/resources/answer/client/Client";
 import { Audio } from "./api/resources/audio/client/Client";
-import { Chat } from "./api/resources/chat/client/Client";
-import { Classifications } from "./api/resources/classifications/client/Client";
-import { Completions } from "./api/resources/completions/client/Client";
-import { Edits } from "./api/resources/edits/client/Client";
-import { Embeddings } from "./api/resources/embeddings/client/Client";
-import { Engines } from "./api/resources/engines/client/Client";
-import { Files } from "./api/resources/files/client/Client";
-import { FineTunes } from "./api/resources/fineTunes/client/Client";
-import { Images } from "./api/resources/images/client/Client";
-import { Models } from "./api/resources/models/client/Client";
-import { Moderations } from "./api/resources/moderations/client/Client";
+import { ChatCompletion } from "./api/resources/chatCompletion/client/Client";
+import { Classification } from "./api/resources/classification/client/Client";
+import { Completion } from "./api/resources/completion/client/Client";
+import { Edit } from "./api/resources/edit/client/Client";
+import { Embedding } from "./api/resources/embedding/client/Client";
+import { Engine } from "./api/resources/engine/client/Client";
+import { File } from "./api/resources/file/client/Client";
+import { FineTune } from "./api/resources/fineTune/client/Client";
+import { Image } from "./api/resources/image/client/Client";
+import { Model } from "./api/resources/model/client/Client";
+import { Moderation } from "./api/resources/moderation/client/Client";
 
 export declare namespace OpenAiApiClient {
     interface Options {
         environment?: environments.OpenAiApiEnvironment | string;
-        token?: core.Supplier<core.BearerToken | undefined>;
+        token: core.Supplier<core.BearerToken>;
     }
 }
 
 export class OpenAiApiClient {
     constructor(private readonly options: OpenAiApiClient.Options) {}
 
-    private _answers: Answers | undefined;
+    private _answer: Answer | undefined;
 
-    public get answers(): Answers {
-        return (this._answers ??= new Answers(this.options));
+    public get answer(): Answer {
+        return (this._answer ??= new Answer(this.options));
     }
 
     private _audio: Audio | undefined;
@@ -40,69 +40,69 @@ export class OpenAiApiClient {
         return (this._audio ??= new Audio(this.options));
     }
 
-    private _chat: Chat | undefined;
+    private _chatCompletion: ChatCompletion | undefined;
 
-    public get chat(): Chat {
-        return (this._chat ??= new Chat(this.options));
+    public get chatCompletion(): ChatCompletion {
+        return (this._chatCompletion ??= new ChatCompletion(this.options));
     }
 
-    private _classifications: Classifications | undefined;
+    private _classification: Classification | undefined;
 
-    public get classifications(): Classifications {
-        return (this._classifications ??= new Classifications(this.options));
+    public get classification(): Classification {
+        return (this._classification ??= new Classification(this.options));
     }
 
-    private _completions: Completions | undefined;
+    private _completion: Completion | undefined;
 
-    public get completions(): Completions {
-        return (this._completions ??= new Completions(this.options));
+    public get completion(): Completion {
+        return (this._completion ??= new Completion(this.options));
     }
 
-    private _edits: Edits | undefined;
+    private _edit: Edit | undefined;
 
-    public get edits(): Edits {
-        return (this._edits ??= new Edits(this.options));
+    public get edit(): Edit {
+        return (this._edit ??= new Edit(this.options));
     }
 
-    private _embeddings: Embeddings | undefined;
+    private _embedding: Embedding | undefined;
 
-    public get embeddings(): Embeddings {
-        return (this._embeddings ??= new Embeddings(this.options));
+    public get embedding(): Embedding {
+        return (this._embedding ??= new Embedding(this.options));
     }
 
-    private _engines: Engines | undefined;
+    private _engine: Engine | undefined;
 
-    public get engines(): Engines {
-        return (this._engines ??= new Engines(this.options));
+    public get engine(): Engine {
+        return (this._engine ??= new Engine(this.options));
     }
 
-    private _files: Files | undefined;
+    private _file: File | undefined;
 
-    public get files(): Files {
-        return (this._files ??= new Files(this.options));
+    public get file(): File {
+        return (this._file ??= new File(this.options));
     }
 
-    private _fineTunes: FineTunes | undefined;
+    private _fineTune: FineTune | undefined;
 
-    public get fineTunes(): FineTunes {
-        return (this._fineTunes ??= new FineTunes(this.options));
+    public get fineTune(): FineTune {
+        return (this._fineTune ??= new FineTune(this.options));
     }
 
-    private _images: Images | undefined;
+    private _image: Image | undefined;
 
-    public get images(): Images {
-        return (this._images ??= new Images(this.options));
+    public get image(): Image {
+        return (this._image ??= new Image(this.options));
     }
 
-    private _models: Models | undefined;
+    private _model: Model | undefined;
 
-    public get models(): Models {
-        return (this._models ??= new Models(this.options));
+    public get model(): Model {
+        return (this._model ??= new Model(this.options));
     }
 
-    private _moderations: Moderations | undefined;
+    private _moderation: Moderation | undefined;
 
-    public get moderations(): Moderations {
-        return (this._moderations ??= new Moderations(this.options));
+    public get moderation(): Moderation {
+        return (this._moderation ??= new Moderation(this.options));
     }
 }

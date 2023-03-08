@@ -26,6 +26,7 @@ export const SchemaType = {
     RECORD: "record",
     SET: "set",
     UNION: "union",
+    UNDISCRIMINATED_UNION: "undiscriminatedUnion",
     OPTIONAL: "optional",
 } as const;
 export type SchemaType = typeof SchemaType[keyof typeof SchemaType];
@@ -49,7 +50,24 @@ export interface ValidationError {
 
 export interface SchemaOptions {
     /**
+     * how to handle unrecognized keys in objects
+     *
+     * @default "fail"
+     */
+    unrecognizedObjectKeys?: "fail" | "passthrough" | "strip";
+
+    /**
+     * whether to fail when an unrecognized discriminant value is
+     * encountered in a union
+     *
      * @default false
      */
-    allowUnknownKeys?: boolean;
+    allowUnrecognizedUnionMembers?: boolean;
+
+    /**
+     * whether to fail when an unrecognized enum value is encountered
+     *
+     * @default false
+     */
+    allowUnrecognizedEnumValues?: boolean;
 }
