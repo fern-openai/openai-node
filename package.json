@@ -1,6 +1,6 @@
 {
     "name": "@fern-api/openai",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "private": false,
     "repository": "https://github.com/fern-openai/open-ai-node",
     "files": [

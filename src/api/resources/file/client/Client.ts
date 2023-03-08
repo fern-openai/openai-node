@@ -9,15 +9,15 @@ import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
-export declare namespace File {
+export declare namespace File_ {
     interface Options {
         environment?: environments.OpenAiApiEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
 
-export class File {
-    constructor(private readonly options: File.Options) {}
+export class File_ {
+    constructor(private readonly options: File_.Options) {}
 
     /**
      * Returns a list of files that belong to the user's organization.

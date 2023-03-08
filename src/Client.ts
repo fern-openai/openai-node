@@ -12,7 +12,7 @@ import { Completion } from "./api/resources/completion/client/Client";
 import { Edit } from "./api/resources/edit/client/Client";
 import { Embedding } from "./api/resources/embedding/client/Client";
 import { Engine } from "./api/resources/engine/client/Client";
-import { File } from "./api/resources/file/client/Client";
+import { File_ } from "./api/resources/file/client/Client";
 import { FineTune } from "./api/resources/fineTune/client/Client";
 import { Image } from "./api/resources/image/client/Client";
 import { Model } from "./api/resources/model/client/Client";
@@ -76,10 +76,10 @@ export class OpenAiApiClient {
         return (this._engine ??= new Engine(this.options));
     }
 
-    private _file: File | undefined;
+    private _file: File_ | undefined;
 
-    public get file(): File {
-        return (this._file ??= new File(this.options));
+    public get file(): File_ {
+        return (this._file ??= new File_(this.options));
     }
 
     private _fineTune: FineTune | undefined;
