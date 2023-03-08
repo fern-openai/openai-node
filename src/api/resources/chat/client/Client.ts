@@ -9,45 +9,51 @@ import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
 
-export declare namespace Completion {
+export declare namespace Chat {
     interface Options {
         environment?: environments.OpenAiApiEnvironment | string;
         token: core.Supplier<core.BearerToken>;
     }
 }
 
-export class Completion {
-    constructor(private readonly options: Completion.Options) {}
+export class Chat {
+    constructor(private readonly options: Chat.Options) {}
 
-    public create(
-        request: OpenAiApi.CreateCompletionRequest & {
+    public createCompletion(
+        request: OpenAiApi.CreateChatCompletionRequest & {
             stream?: false;
         }
-    ): Promise<OpenAiApi.CreateCompletionResponse>;
-    public create(
-        request: OpenAiApi.CreateCompletionRequest & {
+    ): Promise<OpenAiApi.CreateChatCompletionResponse>;
+    public createCompletion(
+        request: OpenAiApi.CreateChatCompletionRequest & {
             stream: true;
         },
-        cb: (data: OpenAiApi.CreateCompletionResponse) => void,
+        cb: (data: OpenAiApi.CreateChatCompletionResponse) => void,
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
     ): Promise<void>;
-    public async create(
-        request: OpenAiApi.CreateCompletionRequest,
-        cb?: (data: OpenAiApi.CreateCompletionResponse) => void,
+    /**
+     * Creates a completion for the chat message
+     */
+    public async createCompletion(
+        request: OpenAiApi.CreateChatCompletionRequest,
+        cb?: (data: OpenAiApi.CreateChatCompletionResponse) => void,
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
-    ): Promise<OpenAiApi.CreateCompletionResponse | void> {
+    ): Promise<OpenAiApi.CreateChatCompletionResponse | void> {
         if (request.stream) {
             await core.streamingFetcher({
-                url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/completions"),
+                url: urlJoin(
+                    this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                    "/chat/completions"
+                ),
                 method: "POST",
                 headers: {
                     Authorization: await this._getAuthorizationHeader(),
                 },
-                body: await serializers.CreateCompletionRequest.jsonOrThrow(request, {
+                body: await serializers.CreateChatCompletionRequest.jsonOrThrow(request, {
                     unrecognizedObjectKeys: "strip",
                 }),
                 onData: async (data) => {
-                    const parsed = await serializers.CreateCompletionResponse.parse(data, {
+                    const parsed = await serializers.CreateChatCompletionResponse.parse(data, {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
@@ -65,18 +71,21 @@ export class Completion {
             });
         } else {
             const _response = await core.fetcher({
-                url: urlJoin(this.options.environment ?? environments.OpenAiApiEnvironment.Production, "/completions"),
+                url: urlJoin(
+                    this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                    "/chat/completions"
+                ),
                 method: "POST",
                 headers: {
                     Authorization: await this._getAuthorizationHeader(),
                 },
                 contentType: "application/json",
-                body: await serializers.CreateCompletionRequest.jsonOrThrow(request, {
+                body: await serializers.CreateChatCompletionRequest.jsonOrThrow(request, {
                     unrecognizedObjectKeys: "strip",
                 }),
             });
             if (_response.ok) {
-                return await serializers.CreateCompletionResponse.parseOrThrow(_response.body, {
+                return await serializers.CreateChatCompletionResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

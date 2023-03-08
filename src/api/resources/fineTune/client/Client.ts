@@ -197,59 +197,103 @@ export class FineTune {
         }
     }
 
+    public listEvents(
+        fineTuneId: OpenAiApi.FineTuneId,
+        request: OpenAiApi.ListFineTuneEventsRequest & {
+            stream?: false;
+        } = {}
+    ): Promise<OpenAiApi.ListFineTuneEventsResponse>;
+    public listEvents(
+        fineTuneId: OpenAiApi.FineTuneId,
+        request: OpenAiApi.ListFineTuneEventsRequest & {
+            stream: true;
+        } = {},
+        cb: (data: OpenAiApi.FineTune) => void,
+        opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
+    ): Promise<void>;
     /**
      * Get fine-grained status updates for a fine-tune job.
      *
      */
     public async listEvents(
         fineTuneId: OpenAiApi.FineTuneId,
-        request: OpenAiApi.ListFineTuneEventsRequest = {}
-    ): Promise<OpenAiApi.ListFineTuneEventsResponse> {
+        request: OpenAiApi.ListFineTuneEventsRequest,
+        cb?: (data: OpenAiApi.FineTune) => void,
+        opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
+    ): Promise<OpenAiApi.ListFineTuneEventsResponse | void> {
         const { stream } = request;
         const _queryParams = new URLSearchParams();
         if (stream != null) {
             _queryParams.append("stream", stream.toString());
         }
 
-        const _response = await core.fetcher({
-            url: urlJoin(
-                this.options.environment ?? environments.OpenAiApiEnvironment.Production,
-                `/fine-tunes/${await serializers.FineTuneId.jsonOrThrow(fineTuneId)}/events`
-            ),
-            method: "GET",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-            },
-            contentType: "application/json",
-            queryParameters: _queryParams,
-        });
-        if (_response.ok) {
-            return await serializers.ListFineTuneEventsResponse.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
+        if (stream) {
+            await core.streamingFetcher({
+                url: urlJoin(
+                    this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                    `/fine-tunes/${await serializers.FineTuneId.jsonOrThrow(fineTuneId)}/events`
+                ),
+                method: "GET",
+                headers: {
+                    Authorization: await this._getAuthorizationHeader(),
+                },
+                queryParameters: _queryParams,
+                onData: async (data) => {
+                    const parsed = await serializers.FineTune.parse(data, {
+                        unrecognizedObjectKeys: "passthrough",
+                        allowUnrecognizedUnionMembers: true,
+                        allowUnrecognizedEnumValues: true,
+                    });
+                    if (parsed.ok) {
+                        cb?.(parsed.value);
+                    } else {
+                        opts?.onError?.(parsed.errors);
+                    }
+                },
+                onError: opts?.onError,
+                onFinish: opts?.onFinish,
+                abortController: opts?.abortController,
+                terminator: "[DONE]",
             });
-        }
-
-        if (_response.error.reason === "status-code") {
-            throw new errors.OpenAiApiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
+        } else {
+            const _response = await core.fetcher({
+                url: urlJoin(
+                    this.options.environment ?? environments.OpenAiApiEnvironment.Production,
+                    `/fine-tunes/${await serializers.FineTuneId.jsonOrThrow(fineTuneId)}/events`
+                ),
+                method: "GET",
+                headers: {
+                    Authorization: await this._getAuthorizationHeader(),
+                },
+                contentType: "application/json",
+                queryParameters: _queryParams,
             });
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
+            if (_response.ok) {
+                return await serializers.ListFineTuneEventsResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                });
+            }
+            if (_response.error.reason === "status-code") {
                 throw new errors.OpenAiApiError({
                     statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
+                    body: _response.error.body,
                 });
-            case "timeout":
-                throw new errors.OpenAiApiTimeoutError();
-            case "unknown":
-                throw new errors.OpenAiApiError({
-                    message: _response.error.errorMessage,
-                });
+            }
+            switch (_response.error.reason) {
+                case "non-json":
+                    throw new errors.OpenAiApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.rawBody,
+                    });
+                case "timeout":
+                    throw new errors.OpenAiApiTimeoutError();
+                case "unknown":
+                    throw new errors.OpenAiApiError({
+                        message: _response.error.errorMessage,
+                    });
+            }
         }
     }
 

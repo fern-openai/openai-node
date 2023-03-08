@@ -6,7 +6,7 @@ import * as environments from "./environments";
 import * as core from "./core";
 import { Answer } from "./api/resources/answer/client/Client";
 import { Audio } from "./api/resources/audio/client/Client";
-import { ChatCompletion } from "./api/resources/chatCompletion/client/Client";
+import { Chat } from "./api/resources/chat/client/Client";
 import { Classification } from "./api/resources/classification/client/Client";
 import { Completion } from "./api/resources/completion/client/Client";
 import { Edit } from "./api/resources/edit/client/Client";
@@ -40,10 +40,10 @@ export class OpenAiApiClient {
         return (this._audio ??= new Audio(this.options));
     }
 
-    private _chatCompletion: ChatCompletion | undefined;
+    private _chat: Chat | undefined;
 
-    public get chatCompletion(): ChatCompletion {
-        return (this._chatCompletion ??= new ChatCompletion(this.options));
+    public get chat(): Chat {
+        return (this._chat ??= new Chat(this.options));
     }
 
     private _classification: Classification | undefined;
