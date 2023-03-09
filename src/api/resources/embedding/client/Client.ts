@@ -20,7 +20,10 @@ export class Embedding {
     constructor(private readonly options: Embedding.Options) {}
 
     /**
+     * Creates an embedding vector representing the input text.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async create(request: OpenAI.CreateEmbeddingRequest): Promise<OpenAI.CreateEmbeddingResponse> {
         const _response = await core.fetcher({

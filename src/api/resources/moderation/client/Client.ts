@@ -20,7 +20,10 @@ export class Moderation {
     constructor(private readonly options: Moderation.Options) {}
 
     /**
+     * Classifies if text violates OpenAI's Content Policy
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async create(request: OpenAI.CreateModerationRequest): Promise<OpenAI.CreateModerationResponse> {
         const _response = await core.fetcher({

@@ -22,7 +22,10 @@ export class Image {
     constructor(private readonly options: Image.Options) {}
 
     /**
+     * Creates an image given a prompt.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async create(request: OpenAI.CreateImageRequest): Promise<OpenAI.ImagesResponse> {
         const _response = await core.fetcher({
@@ -75,7 +78,10 @@ export class Image {
     }
 
     /**
+     * Creates an edited or extended image given an original image and a prompt.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async createEdit(
         image: File | fs.ReadStream,
@@ -155,7 +161,10 @@ export class Image {
     }
 
     /**
+     * Creates a variation of a given image.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async createVariation(
         image: File | fs.ReadStream,

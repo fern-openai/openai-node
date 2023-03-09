@@ -22,7 +22,10 @@ export class File_ {
     constructor(private readonly options: File_.Options) {}
 
     /**
+     * Returns a list of files that belong to the user's organization.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async list(): Promise<OpenAI.ListFilesResponse> {
         const _response = await core.fetcher({
@@ -74,7 +77,11 @@ export class File_ {
     }
 
     /**
+     * Upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Please contact us if you need to increase the storage limit.
+     *
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async upload(file: File | fs.ReadStream, request: OpenAI.UploadFileRequest): Promise<OpenAI.OpenAiFile> {
         const _request = new FormData();
@@ -130,7 +137,10 @@ export class File_ {
     }
 
     /**
+     * Returns information about a specific file.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async retrieve(fileId: OpenAI.FileId): Promise<OpenAI.OpenAiFile> {
         const _response = await core.fetcher({
@@ -185,7 +195,10 @@ export class File_ {
     }
 
     /**
+     * Delete a file.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async delete(fileId: OpenAI.FileId): Promise<OpenAI.DeleteFileResponse> {
         const _response = await core.fetcher({
@@ -240,7 +253,10 @@ export class File_ {
     }
 
     /**
+     * Returns the contents of the specified file
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async download(fileId: OpenAI.FileId): Promise<string> {
         const _response = await core.fetcher({

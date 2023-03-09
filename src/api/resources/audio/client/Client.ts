@@ -22,7 +22,10 @@ export class Audio {
     constructor(private readonly options: Audio.Options) {}
 
     /**
+     * Transcribes audio into the input language.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async transcribe(
         file: File | fs.ReadStream,
@@ -97,7 +100,10 @@ export class Audio {
     }
 
     /**
+     * Translates audio into into English.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async translate(file: File | fs.ReadStream, request: OpenAI.CreateTranslationRequest): Promise<void> {
         const _request = new FormData();

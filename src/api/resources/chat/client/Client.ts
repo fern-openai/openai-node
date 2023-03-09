@@ -40,6 +40,7 @@ export class Chat {
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
     ): Promise<OpenAI.CreateChatCompletionResponse | void> {
         if (request.stream) {
+            const _queue = new core.CallbackQueue();
             await core.streamingFetcher({
                 url: urlJoin(environments.OpenAIEnvironment.Production, "/chat/completions"),
                 method: "POST",
@@ -50,7 +51,7 @@ export class Chat {
                 body: await serializers.CreateChatCompletionRequest.jsonOrThrow(request, {
                     unrecognizedObjectKeys: "strip",
                 }),
-                onData: async (data) => {
+                onData: _queue.wrap(async (data) => {
                     const parsed = await serializers.CreateChatCompletionResponseChunk.parse(data, {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
@@ -61,9 +62,9 @@ export class Chat {
                     } else {
                         opts?.onError?.(parsed.errors);
                     }
-                },
-                onError: opts?.onError,
-                onFinish: opts?.onFinish,
+                }),
+                onError: opts?.onError != null ? _queue.wrap(opts.onError) : undefined,
+                onFinish: opts?.onFinish != null ? _queue.wrap(opts.onFinish) : undefined,
                 abortController: opts?.abortController,
                 terminator: "[DONE]",
             });

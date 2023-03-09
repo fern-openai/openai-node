@@ -20,7 +20,11 @@ export class Answer {
     constructor(private readonly options: Answer.Options) {}
 
     /**
+     * Answers the specified question using the provided documents and examples. The endpoint first [searches](https://platform.openai.com/docs/api-reference/searches) over provided documents or files to find relevant context. The relevant context is combined with the provided examples and question to create the prompt for [completion](https://platform.openai.com/docs/api-reference/completions).
+     *
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async create(request: OpenAI.CreateAnswerRequest): Promise<OpenAI.CreateAnswerResponse> {
         const _response = await core.fetcher({

@@ -20,7 +20,10 @@ export class Edit {
     constructor(private readonly options: Edit.Options) {}
 
     /**
+     * Creates a new edit for the provided input, instruction, and parameters.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async create(request: OpenAI.CreateEditRequest): Promise<OpenAI.CreateEditResponse> {
         const _response = await core.fetcher({

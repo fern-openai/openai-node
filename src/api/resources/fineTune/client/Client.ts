@@ -20,7 +20,10 @@ export class FineTune {
     constructor(private readonly options: FineTune.Options) {}
 
     /**
+     * List your organization's fine-tuning jobs
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async list(): Promise<OpenAI.ListFineTunesResponse> {
         const _response = await core.fetcher({
@@ -72,7 +75,11 @@ export class FineTune {
     }
 
     /**
+     * Creates a job that fine-tunes a specified model from a given dataset. Response includes details of the enqueued job including job status and the name of the fine-tuned models once complete. [Learn more about Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
+     *
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async create(request: OpenAI.CreateFineTuneRequest): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
@@ -125,7 +132,12 @@ export class FineTune {
     }
 
     /**
+     * Gets info about the fine-tune job.
+     * [Learn more about Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
+     *
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async retrieve(fineTuneId: OpenAI.FineTuneId): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
@@ -180,7 +192,10 @@ export class FineTune {
     }
 
     /**
+     * Immediately cancel a fine-tune job.
      * @throws {OpenAI.UnauthorizedError}
+     * @throws {OpenAI.RateLimitError}
+     * @throws {OpenAI.InternalServerError}
      */
     public async cancel(fineTuneId: OpenAI.FineTuneId): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
@@ -265,6 +280,7 @@ export class FineTune {
         }
 
         if (stream) {
+            const _queue = new core.CallbackQueue();
             await core.streamingFetcher({
                 url: urlJoin(
                     environments.OpenAIEnvironment.Production,
@@ -276,7 +292,7 @@ export class FineTune {
                     "OpenAI-Organization": await core.Supplier.get(this.options.organization),
                 },
                 queryParameters: _queryParams,
-                onData: async (data) => {
+                onData: _queue.wrap(async (data) => {
                     const parsed = await serializers.FineTune.parse(data, {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
@@ -287,9 +303,9 @@ export class FineTune {
                     } else {
                         opts?.onError?.(parsed.errors);
                     }
-                },
-                onError: opts?.onError,
-                onFinish: opts?.onFinish,
+                }),
+                onError: opts?.onError != null ? _queue.wrap(opts.onError) : undefined,
+                onFinish: opts?.onFinish != null ? _queue.wrap(opts.onFinish) : undefined,
                 abortController: opts?.abortController,
                 terminator: "[DONE]",
             });

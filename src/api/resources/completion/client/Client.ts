@@ -37,6 +37,7 @@ export class Completion {
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
     ): Promise<OpenAI.CreateCompletionResponse | void> {
         if (request.stream) {
+            const _queue = new core.CallbackQueue();
             await core.streamingFetcher({
                 url: urlJoin(environments.OpenAIEnvironment.Production, "/completions"),
                 method: "POST",
@@ -47,7 +48,7 @@ export class Completion {
                 body: await serializers.CreateCompletionRequest.jsonOrThrow(request, {
                     unrecognizedObjectKeys: "strip",
                 }),
-                onData: async (data) => {
+                onData: _queue.wrap(async (data) => {
                     const parsed = await serializers.CreateCompletionResponseChunk.parse(data, {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
@@ -58,9 +59,9 @@ export class Completion {
                     } else {
                         opts?.onError?.(parsed.errors);
                     }
-                },
-                onError: opts?.onError,
-                onFinish: opts?.onFinish,
+                }),
+                onError: opts?.onError != null ? _queue.wrap(opts.onError) : undefined,
+                onFinish: opts?.onFinish != null ? _queue.wrap(opts.onFinish) : undefined,
                 abortController: opts?.abortController,
                 terminator: "[DONE]",
             });
