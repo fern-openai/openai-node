@@ -15,6 +15,7 @@ export declare namespace File_ {
     interface Options {
         environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
+        organization?: core.Supplier<string | undefined>;
     }
 }
 
@@ -30,6 +31,7 @@ export class File_ {
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });
@@ -84,6 +86,7 @@ export class File_ {
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "multipart/form-data",
             body: _request,
@@ -139,6 +142,7 @@ export class File_ {
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });
@@ -193,6 +197,7 @@ export class File_ {
             method: "DELETE",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });
@@ -247,6 +252,7 @@ export class File_ {
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });

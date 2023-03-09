@@ -15,6 +15,7 @@ export declare namespace Image {
     interface Options {
         environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
+        organization?: core.Supplier<string | undefined>;
     }
 }
 
@@ -30,6 +31,7 @@ export class Image {
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
             body: await serializers.CreateImageRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -88,7 +90,7 @@ export class Image {
         }
 
         _request.append("prompt", request.prompt);
-        if (request.n.toString() != null) {
+        if (request.n != null) {
             _request.append("n", request.n.toString());
         }
 
@@ -109,6 +111,7 @@ export class Image {
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "multipart/form-data",
             body: _request,
@@ -161,7 +164,7 @@ export class Image {
     ): Promise<OpenAI.ImagesResponse> {
         const _request = new FormData();
         _request.append("image", image);
-        if (request.n.toString() != null) {
+        if (request.n != null) {
             _request.append("n", request.n.toString());
         }
 
@@ -182,6 +185,7 @@ export class Image {
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "multipart/form-data",
             body: _request,

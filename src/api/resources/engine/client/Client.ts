@@ -13,6 +13,7 @@ export declare namespace Engine {
     interface Options {
         environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
+        organization?: core.Supplier<string | undefined>;
     }
 }
 
@@ -28,6 +29,7 @@ export class Engine {
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });
@@ -82,6 +84,7 @@ export class Engine {
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });
@@ -139,6 +142,7 @@ export class Engine {
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
             body: await serializers.CreateSearchRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),

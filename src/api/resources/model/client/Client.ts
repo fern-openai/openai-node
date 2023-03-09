@@ -13,6 +13,7 @@ export declare namespace Model {
     interface Options {
         environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
+        organization?: core.Supplier<string | undefined>;
     }
 }
 
@@ -28,6 +29,7 @@ export class Model {
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });
@@ -82,6 +84,7 @@ export class Model {
             method: "GET",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });
@@ -136,6 +139,7 @@ export class Model {
             method: "DELETE",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
         });

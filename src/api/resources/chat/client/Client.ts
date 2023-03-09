@@ -13,6 +13,7 @@ export declare namespace Chat {
     interface Options {
         environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
+        organization?: core.Supplier<string | undefined>;
     }
 }
 
@@ -48,6 +49,7 @@ export class Chat {
                 method: "POST",
                 headers: {
                     Authorization: await this._getAuthorizationHeader(),
+                    "OpenAI-Organization": await core.Supplier.get(this.options.organization),
                 },
                 body: await serializers.CreateChatCompletionRequest.jsonOrThrow(request, {
                     unrecognizedObjectKeys: "strip",
@@ -78,6 +80,7 @@ export class Chat {
                 method: "POST",
                 headers: {
                     Authorization: await this._getAuthorizationHeader(),
+                    "OpenAI-Organization": await core.Supplier.get(this.options.organization),
                 },
                 contentType: "application/json",
                 body: await serializers.CreateChatCompletionRequest.jsonOrThrow(request, {

@@ -15,6 +15,7 @@ export declare namespace Audio {
     interface Options {
         environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
+        organization?: core.Supplier<string | undefined>;
     }
 }
 
@@ -39,7 +40,7 @@ export class Audio {
             _request.append("response_format", request.responseFormat);
         }
 
-        if (request.temperature.toString() != null) {
+        if (request.temperature != null) {
             _request.append("temperature", request.temperature.toString());
         }
 
@@ -55,6 +56,7 @@ export class Audio {
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "multipart/form-data",
             body: _request,
@@ -113,7 +115,7 @@ export class Audio {
             _request.append("response_format", request.responseFormat);
         }
 
-        if (request.temperature.toString() != null) {
+        if (request.temperature != null) {
             _request.append("temperature", request.temperature.toString());
         }
 
@@ -123,6 +125,7 @@ export class Audio {
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "multipart/form-data",
             body: _request,

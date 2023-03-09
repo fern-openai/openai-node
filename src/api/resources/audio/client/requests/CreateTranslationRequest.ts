@@ -28,6 +28,5 @@ export interface CreateTranslationRequest {
      *
      */
     temperature?: number;
-    /** CreateTranslationResponse */
     response: OpenAI.CreateTranslationResponse;
 }

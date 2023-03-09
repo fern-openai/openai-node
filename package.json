@@ -1,8 +1,8 @@
 {
     "name": "@fern-api/openai",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "private": false,
-    "repository": "https://github.com/fern-openai/open-ai-node",
+    "repository": "https://github.com/fern-openai/openai-node",
     "files": [
         "Client.d.ts",
         "Client.js",

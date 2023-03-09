@@ -13,6 +13,7 @@ export declare namespace Answer {
     interface Options {
         environment?: environments.OpenAIEnvironment | string;
         token: core.Supplier<core.BearerToken>;
+        organization?: core.Supplier<string | undefined>;
     }
 }
 
@@ -28,6 +29,7 @@ export class Answer {
             method: "POST",
             headers: {
                 Authorization: await this._getAuthorizationHeader(),
+                "OpenAI-Organization": await core.Supplier.get(this.options.organization),
             },
             contentType: "application/json",
             body: await serializers.CreateAnswerRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
