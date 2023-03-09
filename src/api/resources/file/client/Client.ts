@@ -77,7 +77,7 @@ export class File_ {
     /**
      * @throws {OpenAI.UnauthorizedError}
      */
-    public async create(file: File | fs.ReadStream, request: OpenAI.CreateFileRequest): Promise<OpenAI.OpenAiFile> {
+    public async upload(file: File | fs.ReadStream, request: OpenAI.UploadFileRequest): Promise<OpenAI.OpenAiFile> {
         const _request = new FormData();
         _request.append("file", file);
         _request.append("purpose", request.purpose);

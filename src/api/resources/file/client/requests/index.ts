@@ -1,1 +1,1 @@
-export { CreateFileRequest } from "./CreateFileRequest";
+export { UploadFileRequest } from "./UploadFileRequest";
