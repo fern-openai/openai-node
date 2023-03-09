@@ -6,5 +6,5 @@ import { OpenAI } from "@fern-api/openai";
 
 export interface ChatItemsDelta {
     role?: OpenAI.AuthorRole;
-    conent?: string;
+    content?: string;
 }
