@@ -20,7 +20,7 @@ export class Model {
     constructor(private readonly options: Model.Options) {}
 
     /**
-     * Lists the currently available models, and provides basic information about each one such as the owner and availability.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async list(): Promise<OpenAI.ListModelsResponse> {
         const _response = await core.fetcher({
@@ -40,10 +40,19 @@ export class Model {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -62,7 +71,7 @@ export class Model {
     }
 
     /**
-     * Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async retrieve(model: OpenAI.ModelId): Promise<OpenAI.Model> {
         const _response = await core.fetcher({
@@ -85,10 +94,19 @@ export class Model {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -107,7 +125,7 @@ export class Model {
     }
 
     /**
-     * Delete a fine-tuned model. You must have the Owner role in your organization.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async delete(model: OpenAI.ModelId): Promise<OpenAI.DeleteModelResponse> {
         const _response = await core.fetcher({
@@ -130,10 +148,19 @@ export class Model {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

@@ -20,8 +20,7 @@ export class Classification {
     constructor(private readonly options: Classification.Options) {}
 
     /**
-     * Classifies the specified `query` using provided examples. The endpoint first [searches](https://platform.openai.com/docs/api-reference/searches) over the labeled examples to select the ones most relevant for the particular query. Then, the relevant examples are combined with the query to construct a prompt to produce the final label via the [completions](https://platform.openai.com/docs/api-reference/completions) endpoint. Labeled examples can be provided via an uploaded `file`, or explicitly listed in the request using the `examples` parameter for quick tests and small scale use cases.
-     *
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async create(request: OpenAI.CreateClassificationRequest): Promise<OpenAI.CreateClassificationResponse> {
         const _response = await core.fetcher({
@@ -47,10 +46,19 @@ export class Classification {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

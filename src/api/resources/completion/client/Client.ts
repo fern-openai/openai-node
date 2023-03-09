@@ -28,12 +28,12 @@ export class Completion {
         request: OpenAI.CreateCompletionRequest & {
             stream: true;
         },
-        cb: (data: OpenAI.CreateCompletionResponse) => void,
+        cb: (data: OpenAI.CreateCompletionResponseChunk) => void,
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
     ): Promise<void>;
     public async create(
         request: OpenAI.CreateCompletionRequest,
-        cb?: (data: OpenAI.CreateCompletionResponse) => void,
+        cb?: (data: OpenAI.CreateCompletionResponseChunk) => void,
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
     ): Promise<OpenAI.CreateCompletionResponse | void> {
         if (request.stream) {
@@ -47,7 +47,7 @@ export class Completion {
                     unrecognizedObjectKeys: "strip",
                 }),
                 onData: async (data) => {
-                    const parsed = await serializers.CreateCompletionResponse.parse(data, {
+                    const parsed = await serializers.CreateCompletionResponseChunk.parse(data, {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
@@ -83,10 +83,19 @@ export class Completion {
                 });
             }
             if (_response.error.reason === "status-code") {
-                throw new errors.OpenAIError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.body,
-                });
+                switch (_response.error.statusCode) {
+                    case 401:
+                        throw new OpenAI.UnauthorizedError();
+                    case 429:
+                        throw new OpenAI.RateLimitError();
+                    case 500:
+                        throw new OpenAI.InternalServerError();
+                    default:
+                        throw new errors.OpenAIError({
+                            statusCode: _response.error.statusCode,
+                            body: _response.error.body,
+                        });
+                }
             }
             switch (_response.error.reason) {
                 case "non-json":

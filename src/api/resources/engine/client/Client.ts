@@ -20,7 +20,7 @@ export class Engine {
     constructor(private readonly options: Engine.Options) {}
 
     /**
-     * Lists the currently available (non-finetuned) models, and provides basic information about each one such as the owner and availability.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async list(): Promise<OpenAI.ListEnginesResponse> {
         const _response = await core.fetcher({
@@ -40,10 +40,19 @@ export class Engine {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -62,7 +71,7 @@ export class Engine {
     }
 
     /**
-     * Retrieves a model instance, providing basic information about it such as the owner and availability.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async retrieve(engineId: OpenAI.EngineId): Promise<OpenAI.Engine> {
         const _response = await core.fetcher({
@@ -85,10 +94,19 @@ export class Engine {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -107,8 +125,7 @@ export class Engine {
     }
 
     /**
-     * The search endpoint computes similarity scores between provided query and documents. Documents can be passed directly to the API if there are no more than 200 of them. To go beyond the 200 document limit, documents can be processed offline and then used for efficient retrieval at query time. When `file` is set, the search endpoint searches over all the documents in the given file and returns up to the `max_rerank` number of documents. These documents will be returned along with their search scores. The similarity score is a positive score that usually ranges from 0 to 300 (but can sometimes go higher), where a score above 200 usually means the document is semantically similar to the query.
-     *
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async create(
         engineId: OpenAI.EngineId,
@@ -135,10 +152,19 @@ export class Engine {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

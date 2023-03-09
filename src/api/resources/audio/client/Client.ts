@@ -4,7 +4,9 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
+import * as fs from "fs";
 import { OpenAI } from "@fern-api/openai";
+import FormData from "form-data";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
@@ -20,10 +22,10 @@ export class Audio {
     constructor(private readonly options: Audio.Options) {}
 
     /**
-     * Transcribes audio into the input language.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async transcribe(
-        file: File,
+        file: File | fs.ReadStream,
         request: OpenAI.CreateTranscriptionRequest
     ): Promise<OpenAI.CreateTranscriptionResponse> {
         const _request = new FormData();
@@ -37,7 +39,7 @@ export class Audio {
             _request.append("response_format", request.responseFormat);
         }
 
-        if (request.temperature != null) {
+        if (request.temperature.toString() != null) {
             _request.append("temperature", request.temperature.toString());
         }
 
@@ -66,10 +68,19 @@ export class Audio {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -88,9 +99,9 @@ export class Audio {
     }
 
     /**
-     * Translates audio into into English.
+     * @throws {OpenAI.UnauthorizedError}
      */
-    public async translate(file: File, request: OpenAI.CreateTranslationRequest): Promise<void> {
+    public async translate(file: File | fs.ReadStream, request: OpenAI.CreateTranslationRequest): Promise<void> {
         const _request = new FormData();
         _request.append("file", file);
         _request.append("model", request.model);
@@ -102,7 +113,7 @@ export class Audio {
             _request.append("response_format", request.responseFormat);
         }
 
-        if (request.temperature != null) {
+        if (request.temperature.toString() != null) {
             _request.append("temperature", request.temperature.toString());
         }
 
@@ -121,10 +132,19 @@ export class Audio {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

@@ -6,9 +6,9 @@ import * as serializers from "../../..";
 import { OpenAI } from "@fern-api/openai";
 import * as core from "../../../../core";
 
-export const CreateCompletionResponse: core.serialization.ObjectSchema<
-    serializers.CreateCompletionResponse.Raw,
-    OpenAI.CreateCompletionResponse
+export const CreateCompletionResponseChunk: core.serialization.ObjectSchema<
+    serializers.CreateCompletionResponseChunk.Raw,
+    OpenAI.CreateCompletionResponseChunk
 > = core.serialization.object({
     id: core.serialization.string(),
     object: core.serialization.string(),
@@ -17,16 +17,14 @@ export const CreateCompletionResponse: core.serialization.ObjectSchema<
     choices: core.serialization.list(
         core.serialization.lazyObject(async () => (await import("../../..")).CompletionChoice)
     ),
-    usage: core.serialization.lazyObject(async () => (await import("../../..")).CompletionUsage),
 });
 
-export declare namespace CreateCompletionResponse {
+export declare namespace CreateCompletionResponseChunk {
     interface Raw {
         id: string;
         object: string;
         created: number;
         model: string;
         choices: serializers.CompletionChoice.Raw[];
-        usage: serializers.CompletionUsage.Raw;
     }
 }

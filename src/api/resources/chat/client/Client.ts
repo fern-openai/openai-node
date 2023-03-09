@@ -31,12 +31,12 @@ export class Chat {
         request: OpenAI.CreateChatCompletionRequest & {
             stream: true;
         },
-        cb: (data: OpenAI.CreateChatCompletionResponse) => void,
+        cb: (data: OpenAI.CreateChatCompletionResponseChunk) => void,
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
     ): Promise<void>;
     public async createCompletion(
         request: OpenAI.CreateChatCompletionRequest,
-        cb?: (data: OpenAI.CreateChatCompletionResponse) => void,
+        cb?: (data: OpenAI.CreateChatCompletionResponseChunk) => void,
         opts?: Pick<core.StreamingFetcher.Args, "onError" | "onFinish" | "abortController" | "timeoutMs">
     ): Promise<OpenAI.CreateChatCompletionResponse | void> {
         if (request.stream) {
@@ -53,7 +53,7 @@ export class Chat {
                     unrecognizedObjectKeys: "strip",
                 }),
                 onData: async (data) => {
-                    const parsed = await serializers.CreateChatCompletionResponse.parse(data, {
+                    const parsed = await serializers.CreateChatCompletionResponseChunk.parse(data, {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
@@ -92,10 +92,19 @@ export class Chat {
                 });
             }
             if (_response.error.reason === "status-code") {
-                throw new errors.OpenAIError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.body,
-                });
+                switch (_response.error.statusCode) {
+                    case 401:
+                        throw new OpenAI.UnauthorizedError();
+                    case 429:
+                        throw new OpenAI.RateLimitError();
+                    case 500:
+                        throw new OpenAI.InternalServerError();
+                    default:
+                        throw new errors.OpenAIError({
+                            statusCode: _response.error.statusCode,
+                            body: _response.error.body,
+                        });
+                }
             }
             switch (_response.error.reason) {
                 case "non-json":

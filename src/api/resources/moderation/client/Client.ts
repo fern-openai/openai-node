@@ -20,7 +20,7 @@ export class Moderation {
     constructor(private readonly options: Moderation.Options) {}
 
     /**
-     * Classifies if text violates OpenAI's Content Policy
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async create(request: OpenAI.CreateModerationRequest): Promise<OpenAI.CreateModerationResponse> {
         const _response = await core.fetcher({
@@ -41,10 +41,19 @@ export class Moderation {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

@@ -20,7 +20,7 @@ export class FineTune {
     constructor(private readonly options: FineTune.Options) {}
 
     /**
-     * List your organization's fine-tuning jobs
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async list(): Promise<OpenAI.ListFineTunesResponse> {
         const _response = await core.fetcher({
@@ -40,10 +40,19 @@ export class FineTune {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -62,8 +71,7 @@ export class FineTune {
     }
 
     /**
-     * Creates a job that fine-tunes a specified model from a given dataset. Response includes details of the enqueued job including job status and the name of the fine-tuned models once complete. [Learn more about Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
-     *
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async create(request: OpenAI.CreateFineTuneRequest): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
@@ -84,10 +92,19 @@ export class FineTune {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -106,9 +123,7 @@ export class FineTune {
     }
 
     /**
-     * Gets info about the fine-tune job.
-     * [Learn more about Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
-     *
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async retrieve(fineTuneId: OpenAI.FineTuneId): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
@@ -131,10 +146,19 @@ export class FineTune {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -153,7 +177,7 @@ export class FineTune {
     }
 
     /**
-     * Immediately cancel a fine-tune job.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async cancel(fineTuneId: OpenAI.FineTuneId): Promise<OpenAI.FineTune> {
         const _response = await core.fetcher({
@@ -176,10 +200,19 @@ export class FineTune {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -276,10 +309,19 @@ export class FineTune {
                 });
             }
             if (_response.error.reason === "status-code") {
-                throw new errors.OpenAIError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.body,
-                });
+                switch (_response.error.statusCode) {
+                    case 401:
+                        throw new OpenAI.UnauthorizedError();
+                    case 429:
+                        throw new OpenAI.RateLimitError();
+                    case 500:
+                        throw new OpenAI.InternalServerError();
+                    default:
+                        throw new errors.OpenAIError({
+                            statusCode: _response.error.statusCode,
+                            body: _response.error.body,
+                        });
+                }
             }
             switch (_response.error.reason) {
                 case "non-json":

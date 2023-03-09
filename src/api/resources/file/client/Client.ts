@@ -8,6 +8,8 @@ import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
+import * as fs from "fs";
+import FormData from "form-data";
 
 export declare namespace File_ {
     interface Options {
@@ -20,7 +22,7 @@ export class File_ {
     constructor(private readonly options: File_.Options) {}
 
     /**
-     * Returns a list of files that belong to the user's organization.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async list(): Promise<OpenAI.ListFilesResponse> {
         const _response = await core.fetcher({
@@ -40,10 +42,19 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -62,10 +73,9 @@ export class File_ {
     }
 
     /**
-     * Upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Please contact us if you need to increase the storage limit.
-     *
+     * @throws {OpenAI.UnauthorizedError}
      */
-    public async create(file: File, request: OpenAI.CreateFileRequest): Promise<OpenAI.OpenAiFile> {
+    public async create(file: File | fs.ReadStream, request: OpenAI.CreateFileRequest): Promise<OpenAI.OpenAiFile> {
         const _request = new FormData();
         _request.append("file", file);
         _request.append("purpose", request.purpose);
@@ -87,10 +97,19 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -109,7 +128,7 @@ export class File_ {
     }
 
     /**
-     * Returns information about a specific file.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async retrieve(fileId: OpenAI.FileId): Promise<OpenAI.OpenAiFile> {
         const _response = await core.fetcher({
@@ -132,10 +151,19 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -154,7 +182,7 @@ export class File_ {
     }
 
     /**
-     * Delete a file.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async delete(fileId: OpenAI.FileId): Promise<OpenAI.DeleteFileResponse> {
         const _response = await core.fetcher({
@@ -177,10 +205,19 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -199,7 +236,7 @@ export class File_ {
     }
 
     /**
-     * Returns the contents of the specified file
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async download(fileId: OpenAI.FileId): Promise<string> {
         const _response = await core.fetcher({
@@ -222,10 +259,19 @@ export class File_ {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

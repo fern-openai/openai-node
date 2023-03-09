@@ -26,6 +26,7 @@ export * as model from "./model";
 export * from "./model/types";
 export * as moderation from "./moderation";
 export * from "./moderation/types";
+export * from "./commons/errors";
 export * from "./answer/client/requests";
 export * from "./audio/client/requests";
 export * from "./chat/client/requests";

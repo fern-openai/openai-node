@@ -8,6 +8,8 @@ import { OpenAI } from "@fern-api/openai";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
 import * as errors from "../../../../errors";
+import * as fs from "fs";
+import FormData from "form-data";
 
 export declare namespace Image {
     interface Options {
@@ -20,7 +22,7 @@ export class Image {
     constructor(private readonly options: Image.Options) {}
 
     /**
-     * Creates an image given a prompt.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async create(request: OpenAI.CreateImageRequest): Promise<OpenAI.ImagesResponse> {
         const _response = await core.fetcher({
@@ -41,10 +43,19 @@ export class Image {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -63,11 +74,11 @@ export class Image {
     }
 
     /**
-     * Creates an edited or extended image given an original image and a prompt.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async createEdit(
-        image: File,
-        mask: File | undefined,
+        image: File | fs.ReadStream,
+        mask: File | fs.ReadStream | undefined,
         request: OpenAI.CreateImageEditRequest
     ): Promise<OpenAI.ImagesResponse> {
         const _request = new FormData();
@@ -77,7 +88,7 @@ export class Image {
         }
 
         _request.append("prompt", request.prompt);
-        if (request.n != null) {
+        if (request.n.toString() != null) {
             _request.append("n", request.n.toString());
         }
 
@@ -111,10 +122,19 @@ export class Image {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -133,15 +153,15 @@ export class Image {
     }
 
     /**
-     * Creates a variation of a given image.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async createVariation(
-        image: File,
+        image: File | fs.ReadStream,
         request: OpenAI.CreateImageVariationRequest
     ): Promise<OpenAI.ImagesResponse> {
         const _request = new FormData();
         _request.append("image", image);
-        if (request.n != null) {
+        if (request.n.toString() != null) {
             _request.append("n", request.n.toString());
         }
 
@@ -175,10 +195,19 @@ export class Image {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

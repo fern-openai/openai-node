@@ -20,7 +20,7 @@ export class Edit {
     constructor(private readonly options: Edit.Options) {}
 
     /**
-     * Creates a new edit for the provided input, instruction, and parameters.
+     * @throws {OpenAI.UnauthorizedError}
      */
     public async create(request: OpenAI.CreateEditRequest): Promise<OpenAI.CreateEditResponse> {
         const _response = await core.fetcher({
@@ -41,10 +41,19 @@ export class Edit {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.OpenAIError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new OpenAI.UnauthorizedError();
+                case 429:
+                    throw new OpenAI.RateLimitError();
+                case 500:
+                    throw new OpenAI.InternalServerError();
+                default:
+                    throw new errors.OpenAIError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

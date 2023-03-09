@@ -4,11 +4,10 @@
 
 import { OpenAI } from "@fern-api/openai";
 
-export interface CreateCompletionResponse {
+export interface CreateChatCompletionResponseChunk {
     id: string;
     object: string;
     created: number;
     model: string;
-    choices: OpenAI.CompletionChoice[];
-    usage: OpenAI.CompletionUsage;
+    choices: OpenAI.ChatItemsChunk[];
 }
